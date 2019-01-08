@@ -6,7 +6,9 @@ Co-Author Claus Aranha - University of Tsukuba.
 
 Co-Author Tetsuya Sakurai - University of Tsukuba.
 
-Working title: Understanding priority functions in MOEA/D.
+Working title: New priority functions based on diveristy for resource allocation in MOEA/D
+Working title: Resource alocating based on diveristy in MOEA/D
+Working title: MOEA/D - New Resource alocation functions based on diversity
 
 Topic of Study: Multiobjective problems - benchmark functions.
 
