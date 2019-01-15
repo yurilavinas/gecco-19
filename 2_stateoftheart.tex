@@ -1,0 +1,46 @@
+\section{Related Works}
+
+\subsection{Priority functions}
+
+%Following the discussion opened in the introduction, we need to define an utility function to allocate the number of evaluations to subproblems. 
+We define priority functions as one way of establishing preferences~\cite{chankong1983multiobjective},\cite{hansson2005decision} among solutions for the allocation of resources. Priority functions monitor the diversity of the solutions of an algorithm and may be used to decide how to distribute the computation resources among subproblems, guiding the search behavior of the algorithm. Also, they may be used as one way of deciding computational resources distributions among subproblems by guiding the distribution over generations~\cite{cai2015external}. 
+
+Only a few studies have been concerned with resource allocation. We highlight: MOEA/D-DRA~\cite{zhang2009performance}; MOEA/D-GRA~\cite{zhou2016all};  MOEA/D-AMS~\cite{chiang2011moea}. According to Zhou and Zhang~\cite{zhou2016all}, MOEA/D-GRA may be seen as an generalization of MOEA/D-DRA and MOEA/D-AMS. The reason is that all of these algorithm use a very similar priority function. The priority function values, $u = \{u_1, u_2, ..., u_N\}$ for every subproblem $i=1,...,N$, is  defined as
+
+\begin{equation}\label{priority}
+	u_i = \dfrac{\text{old function value}-\text{new function value}}{\text{old function value}}.
+\end{equation}
+
+
+This equation, the relative improvement, is based the assumption that if a subproblem has been improved over the last $\Delta T$ generations (\textit{old function value}), it should have a high probability of being improved over the next few generations. 
+	
+The priority function used EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative} differ from the ones that we mentioned previously. In their case, the framework keeps two populations: one working population, and one external archive. The priority function is based on the contribution to the external archive from each subproblem in the search process. 
+
+Together these studies indicate that it is worth monitoring the algorithm behavior and guiding its search, but it is unclear how the priority functions influence into the results since in all the impact of using priority functions was not isolated. That is, in all of the work previously mentioned incremented MOEA/D with priority functions and some extra. For example, in MOEA/D-DRA a 10-tournament selection was used while in MOEA/D-GRA a new replacement strategy was also consider. MOEA/D-AMS proposes an adaptive mating selection mechanism as dynamically adjusts the mating pools of individuals are included. Finally, both EAG-MOEA/D and MOEA/D-CRA use archive population.
+
+That said and based on recent the success of addressing the problem of resource allocation using priority functions, we aim to isolate priority functions to analyze the real impact of using them in the MOEA/D framework. In this study, we compare these two new priority functions with the relative improvement, equation~\ref{priority}, to further understand how priority functions influence the performance of MOEA/D framework.
+
+The new priority functions are defined focus in on improving the population diversity. We believe in the idea that diversity is a critical issues of a search process in any multi-objective algorithm. Therefore, we propose to use priority functions that address lack of diversity aiming to make solutions better spread among each other. These two priority functions focus on different aspects of the diversity: solutions better spread along the Pareto Set (diversity on the decision space) and solutions better spread along the Pareto Front (diversity on the objective space).
+
+
+
+
+\subsection{Diversity Metric}
+
+%Here, I use MRDL as a way to assess the diversity of solutions in an on-line manner and use a utility function based on the output of this metric to guide resource allocation at each generation. 
+
+Over the last two decades, some works in diversity metrics have been successfully applied in different tasks on evolutionary computation. One way to measure diversity is to use metrics that evaluate MOPs solvers. The hypervolume indicator (HV)~\cite{zitzler1998multiobjective} and the Inverted Generational Distance (IGD)~\cite{zhang2008rm} are frequently used as metrics to evaluate such solvers. However they include information about both quality of the solutions and diversity in a single metric.
+
+Among the metrics that only measure diversity, there are mainly two groups. The offline group, that calculate the diversity after the execution of the algorithm, while online group, that calculate the diversity during the execution of the algorithm. We are interested in measuring diversity during the execution of the algorithm, therefore we  briefly introduce some studies that are part of the online group.
+%
+% The offline group is composed of: Chi-square-like deviation~\cite{deb1989genetic}; Spacing method~\cite{scott1995fault}; Uniformly distribution index~\cite{tan2002evolutionary}; Entropy approach~\cite{farhang2002diversity}; Grid diversity metric~\cite{deb2002running}; sparsity measure~\cite{deb2003fast}. These published studies need knowledge of the PF or the ideal vector. While the online group is composed of: sigma method~\cite{mostaghim2003strategies}  (PF lies in the positive objective space); entropy of the solutions by using Parzen window density estimation-\cite{tan2008evolutionary} (sensitive to kernel width); maximum relative diversity loss~\cite{gee2015online} (expensive $O(N^2)$, with $N$ being the size of the parent population).
+
+The online group includes: sigma method~\cite{mostaghim2003strategies}  (PF lies in the positive objective space); entropy of the solutions by using Parzen window density estimation-\cite{tan2008evolutionary} (sensitive to kernel width); and maximum relative diversity loss, MRDL, ~\cite{gee2015online} (expensive $O(N^2)$, with $N$ being the size of the parent population).
+
+In this work, we consider the maximum relative diversity loss as the first priority function since it targets diversity on the objective space. To deal with diversity on the decision space we consider the similarity of decision vectors given by the "spectral" norm. These two new functions are then integrated to the MOEA/D framework and the resource allocation procedure is similar as the one in MOEA/D-GRA. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation.
+
+
+
+
+
+

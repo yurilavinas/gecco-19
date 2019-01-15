@@ -1,0 +1,220 @@
+\section{MOEA/D with priority Functions}
+
+%MOEA/D-RAD, MOEA/D with online Resource Allocation by Diversity Metric, is the variant of MOEA/D proposed in this work. This algorithm uses the maximum relative diversity loss, MRDL, for determining the values of the priority function. 
+
+
+\begin{algorithm}[h]
+	\caption{MOEA/D with priority functions}\label{alg1}
+	\begin{algorithmic}[1]
+		
+		\State Initialize the weight vectors $\lambda_i$, the neighborhood $B_i$, the priority value $u_i$ every subproblem $i=1,...,N$.
+		
+		\While{\textit{Termination criteria}}
+		\For {1 to N}
+		\If{$\textit{rand()} < u_i$}
+		\State Generate an offspring $y$ for subproblem $i$.
+		\State Update the population by $y$.
+		\EndIf
+		\EndFor
+		\State  Evaluate and after $\Delta T$ generations, keep updating \textit{\textbf{u}} by a priority function.
+		\EndWhile
+	\end{algorithmic}
+	%\vspace{-1em}
+\end{algorithm}
+
+
+
+
+Algorithm~\ref{alg1} describes MOEA/D with priority functions. Except for line 4, in which a subproblem may not be part of the group that is going to be iterated and for line 7, in which the priority function is calculated, the whole procedure is similar to the MOEA/D-DE~\cite{zhang2009performance}. Likewise, all reproduction procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. It is important to highlight that the neighborhood is only calculated in the initialization period.
+
+%The update procedure is described The algorithm~\ref{alg2}, as in MOEA/D-GRA~\cite{zhou2016all}.
+The decomposition method used is the Simple-Lattice Design (SLD), the scalar aggregation function used is Weighted Sum (WS), the update strategy used is the Restricted update strategy and finally we performed a simple linear scaling of the objectives to the interval [0, 1].
+
+
+%\subsection{Priority Functions}
+
+We understand that priority functions provides an important property. It provides ways of designing MOEA/D variants that could focus on a desired characteristics, such as diversity, performance contribution, convergence to a specific region of the Pareto Front or others. This is possible because different methods can be used as priority functions to create the vector $u$ in algorithm~\ref{alg1}. 
+
+In this work we chose to focus on studying four different characteristics: diversity on the objective space, diversity in the decision space, no information (random values) and the relative improvement, from MOEA/D-DRA as our priority functions. Next we give a brief explanation of why we chose to consider these  our methods and we describe the details of how to calculate them.
+
+Independently of the method used to calculate the priority function, we initialize the value of the vector $u=1$, as in MOEA/D-DRA. As in DRA and GRA we have a learning period, $\Delta T$ generations (\textit{old function value}). Here $\Delta T=20$.   A sensitivity analyzes should be performed for deciding suitable initial values for $u$ and for $\Delta T$.
+
+ It should also be noticed that once less than $3$ or less subproblems would be improved in a given iteraction $i$, we reset the priority vector $u = 1$  and all subproblems will be chosen for offspring reproduction at the that $i$ iteraction.
+
+\subsection{Priority Function - "Spectral" Norm} 
+
+\begin{algorithm}[t]
+	\caption{"spectral" norm}\label{alg3}
+	\begin{algorithmic}[1]
+		
+		\State Input: NEW new incumbent solutions; OLD, previous iteraction incumbent solutions; N, the population size.
+		\For {i=1 to N}
+		\State u[i] = calculate the "spectral" norm of NEW[i] - OLD[i]
+		\EndFor
+		\State u = scale (u) // between 0 and 1\\
+	\Return u
+	\end{algorithmic}
+\end{algorithm}
+
+The priority function proposed that considers diversity on the objective space is based on the "spectral" norm (or 2-norm), which is the which is the largest singular-value (SVD) of the difference between the offspring solution minus the parent solution. Algorithm~\ref{alg3} gives the details on implementation. 
+
+The idea of the "spectral" norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Therefore more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
+
+
+\subsection{Priority Function - MRDL} 
+
+
+\begin{algorithm}[t]
+	\caption{MRDL}\label{alg2}
+	\begin{algorithmic}[1]
+		
+		\State Input: old MDRL (default value is 0); C, objective function values from the incumbent solutions; P, objective function values from the previous iteraction incumbent solutions; N, the population size.
+		\For {i=1 to $|C|$}
+		\State find $h \in |P|$ where  ($P_h \succeq C_i$) and $||P_h - C_i  ||$ is minimal.
+		\State $d.conv_{y} = C_i - P_h$.
+		\For {j=1 to N}
+		\State $p = P_j - P_h$
+		\State $c = c_j - c_i$
+		\State $proj_{d.conv_{y}}*p \prime = \dfrac{sum(conv_{y}*p \prime)}{crossprod(p \prime)}*p \prime$
+		
+		\State $ proj_{d.conv_{y}}*c \prime = \dfrac{sum(conv_{y}*c \prime)}{crossprod(c \prime)}*c \prime$
+		
+		\State $RDL = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}            $
+		\EndFor
+		MDRL[i] = maximum RDL
+		\EndFor
+		\State u = scale (MDRL - old MDRL) // between 0 and 1\\
+	\Return u, MDRL
+	\end{algorithmic}
+\end{algorithm}
+
+The priority function proposed that considers diversity on the objective space is based on the Maximum Relative Diversity Loss, MRDL. The idea of the MRDL as a priority function is that by measuring diversity on the objective space, more resources are given to incumbent solutions that have similar objective function values between two consecutive iteractions leading to a higher exploration of the objective space.Algorithm~\ref{alg2} gives the details on implementation.
+ 
+ MRDL is an online diversity metric that estimates the diversity loss of a solution to the whole population~\cite{gee2015online}. It is an useful metric since high values of this metric indicates the existence of similar offspring solution in the convergence archive or the offspring solution is close to the line of estimated convergence direction. It uses the space movement (convergence directions) of a solution on the objective space towards the PF. The further an objective vector of a solution is from the convergence direction, the more it contributes for the diversity of the approximated PF. 
+
+Now, we move on how to calculate MRDL. Prior to scalarizing it between $0$ and $1$ to fit the algorithm~\ref{alg1} we calculate MRDL for every individual of the population. The following equation describes how to calculate the priority function given the MRDL, $\Gamma^{p \rightarrow c}$.
+
+
+\vspace{-1em}
+\begin{equation}
+\Gamma_{i}^{p \rightarrow c} = \underset{i=1,...,k}{\max} \Gamma_{d.conv_{y}}^{p \rightarrow c}.
+\end{equation}
+
+%and then 
+%
+%\begin{equation}
+%u_i = \Gamma^{p \rightarrow c}_i -  \Gamma^{p \rightarrow c}_j, \text{with  $1,...,N$.}
+%\end{equation}
+
+
+At every iteraction and each incumbent solution, we need to estimate $k$ convergence directions (shown later)  and then we compute the Relative Diversity Loss (RDL) for each of these $k$ convergence directions. The maximum value among  these $k$ convergence directions is chosen as the MRDL for that incumbent solution.
+
+ RDL is a diversity measurement  that indicates the amount of diversity loss of an individual solution between two consecutive generations. High values of RDL imply a reduction of the solution spread.  To calculate RDL of a solution to the whole population, the following equation is used. It considers every incumbent solution related to a subproblem $i$, from the whole population. This reduction is given by a division between the shortest distance of a parent, $p$,  and offspring, $c$, to the line of convergence direction
+
+\begin{equation}
+\label{rdl}
+\Gamma_{d.conv_{y}}^{p \rightarrow c} = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}.
+\end{equation}
+
+The numerator in~\ref{rdl} is the closest distance between the parent solution ($p$) to the convergence direction $(c_r - p_r)$. While, the denominator in~\ref{rdl} is the closest distance between the offspring solution ($c$) to the convergence direction $(c_r - p_r)$. %The projections of $p\prime$ and $c\prime$ objective vectors onto the convergence direction $d.conv_{y}$ are $proj_{d.conv_{y}}p \prime$ and $proj_{d.conv_{y}}c \prime$.
+
+$p\prime$ and $c\prime $ are given by:
+\vspace{-1em}
+\begin{equation}
+\begin{split}
+p\prime = p - p_r,\\
+c\prime = c - c_s,\\
+\end{split}
+\end{equation}
+%verify this
+
+with $p_r$ and $c_s$ being the parent, and offspring objective vectors used to calculate the convergence direction in equation~\ref{1}. Index $s$ is equal to index $j$ used to calculate $conv_{y}$. The same principle is valid for index $r$. The vector projection between two vectors is defined as next.
+
+\begin{equation}
+proj_{d.conv_{y}}p \prime = \frac {{d.conv_{y}} \cdot {p \prime}} {|{p \prime}|^2}{{p \prime}}.
+\end{equation}
+
+While the norm of $p \prime - proj_{d.conv_{y}}p \prime$ is calculated as follows.
+
+\begin{equation}
+||p \prime - proj_{d.conv_{y}}p \prime|| = \text{"spectral" norm}(p \prime - proj_{d.conv_{y}}p \prime)
+\end{equation}
+
+
+To estimate the convergence direction, $d.conv_{y}$, we need to have an offspring, $c_j$, that dominates at least one parent. Select a parent, $p_h$, solution that is closest to this offspring in the objective space.  For every weakly dominated parent, one convergence direction is calculated as in the next equation.
+\begin{equation}
+\label{1}
+d.conv_{y} = c_j - p_h
+\end{equation}
+
+Index $j$ (for indexing offsprings, $c_j$) is selected from the set $D_c$. Index $h$ is explained later.
+
+\vspace{-1em}
+\begin{equation}
+\label{D}
+D_c = \{d| \exists c_d \prec p_k, k \in {1,..., N}, d \in [1,..., |C|]\}
+z\end{equation}
+
+$N$ is the parent population size, $|C|$ is the size of the offspring population $C$. In equation~\ref{D}, the offspring $c_d$ must weakly dominate at least one parent solution. Index $h$ (for indexing parents, $p_h$) comes from the following two equations.
+\begin{equation}
+h = \underset{k \in D_p }{argmin} || p_k - c_j ||
+\end{equation}
+
+\begin{equation}
+\label{D_p}
+D_p = \{k| \exists c_j \prec p_k, k \in {1,..., N}\}
+\end{equation}
+
+$D_p$ in equation~\ref{D_p} denotes the index set of parent solutions which are weakly dominated by $c_j$ ($j$ index comes from equation~\ref{D}).
+
+
+
+\subsection{Priority Function - Relative Improvement}  
+
+\begin{algorithm}[t]
+	\caption{Relative Improvement}\label{alg5}
+	\begin{algorithmic}[1]
+		
+		\State Input:  C, objective function values from the incumbent solutions; P, objective function values from the $\Delta T$ previous iteraction incumbent solutions; N, the population size.
+		\For {i=1 to N}
+		\State u[i] = (C[i] - P[i])/C[i]
+		\EndFor
+		u / (max(u) + $1.0 x 10^{-50}$)\\
+		\Return u
+	\end{algorithmic}
+\end{algorithm}
+
+Here we give a brief description of the Relative Improvement, the priority function used in MOEA/D-DRA, MOEA/D-GRA and many others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}.  For more information refer to~\cite{zhang2009performance} and~\cite{zhou2016all}.
+%
+%
+\subsection{Priority Function - Random}
+
+\begin{algorithm}[t]
+	\caption{Random}\label{alg4}
+	\begin{algorithmic}[1]
+		
+		\State Input:  N, the population size.
+		\For {i=1 to N}
+		\State u[i] = random value between 0 and 1
+		\EndFor
+		\Return u
+	\end{algorithmic}
+\end{algorithm}
+
+Finally, we describe the last priority function studied in this work. The random priority function is used a a base for comparison. Given no information besides the size of the population, we define the vector of priority $u$ at random. Algorithm~\ref{alg4} gives the details on implementation. 
+%
+%
+%
+%Does is help? When we consider more sophisticated priority functions, are we making any improvement?
+%
+% Using no information. We select solutions at random.
+% 
+% if it is best
+%
+%bigger population might be worse, since if a subpopulation better results were found - to much effort for nothing
+%smaller population might be better, since if a subpopulation better results were found - effort resource better spent
+%subpopulation from a bigger population is better than smaller population with the subpopulation size?
+
+
+
+

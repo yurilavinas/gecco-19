@@ -1,0 +1,48 @@
+\section{Experimental Design}
+
+%\begin{table}[!t]
+%	\centering
+%\begin{tabular}{@{}|l|l|@{}}
+%		\toprule
+%		\textbf{Parameters}   & \textbf{Values}          \\ \midrule
+%		Initial value $u$     & 0.5, for every subproblem \\ 
+%		Population size       & 150                      \\
+%		Neighborhood size T & 20 \\ 
+%		$\delta_p$ & 0.9 \\ 
+%		$\phi$ & 0.5 \\ 
+%		$\eta_m$ & 20 \\
+%		$p_m$ & 0.03333333 \\
+%		$n_r$ & 2 \\
+%		\midrule
+%		Number of evaluations & 60000 		\\		
+%		Number of repetitions & 21                  \\ \bottomrule
+%
+%	\end{tabular}
+%\vspace{1em}
+%\caption{Parameter settings.}
+%\label{table1}
+%\end{table}
+
+
+The question that we want to answer is how MOEA/D-DE performs when combined with: no priority function (none) and the priority functions "spectral" norm, MRDL, relative improvement and random. To answer that question we apply MOEA/-DE with the 5 priority functions to the two artificial benchmark problems and one real-world problem.
+
+\subsection{Artificial Benchmark Functions}
+
+We compared the variants of priority functions using the DTLZ benchmark functions from "Scalable test problems for evolutionary multi-objective optimization" with 100 dimensions and $k = dimensions - \text{number of objectives} + 1$, where the number of objectives is $2$ or $3$. We also consider the UF benchmark functions from~\cite{zhang2008multiobjective}, also with 100 dimensions. 
+
+\subsection{Real World Benchmark Function}
+
+
+The Lunar Landing problem is a real-world problem that simulates the selection of landing sites for lunar landers~\citep{MoonOrbitingSatellite2015}. In lunar exploration plan, finding suitable landing site of the rovers has a very important function. One of the reasons is that these rovers power supply depend on solar power, therefore ensuring sunshine is a critical issue. Also, it is important to landing in a site with the presence of scientifically interesting materials while this site should provide little difficulties to the exploration. 
+
+This is a a minimization design problem in which the two decision variables are the longitude and latitude with the objectives being: the number of continuous shade days, the total communication time (in reality, this is a maximization problem that was inverted with the goal of consistency), and the inclination angles. 
+
+Although the number of design variables is small as two (latitude and longitude), it is considered to be a severe constrained problem due to the presence of two craters. In values, the two constraints are defined as continuous shade days  being $ < 0.05$ while inclination angles being $<0.3$.
+
+\subsection{Parameter Settings}
+
+For every combination, most of the parameters are as follows. The population size $N = 350$, the update size $nr = 2$, the neighborhood size $T = 20$, and the neighborhood search probability $\delta_p = 0.9$. The DE mutation operator value is $phi=0.5$. The Polynomial mutation operator values are $\eta_m 20$ and $p_m = 0.03333333$~\cite{campelo2018moeadr}. The number of executions is 21. At each execution, the number of functions evaluations is 70000.
+
+We perform statistical tests on the hypervolume (HV) metric values and Inverted Generational Distance (IGD) for measuring the quality of a set of obtained non-dominated solutions found by the algorithms on the both DTLZ and UF benchmark problems. Before calculating the HV value, the objective function was scaled between $0$ and $1$. The reference point for the HV calculation was set to $(1, 1)$. While, for the real-world lunar landing problem while for the lunar,  we only perform statistical tests on the hypervolume (HV) metric values and the reference point for the HV calculation was set to $(1, 0, 1)$. 
+
+Higher values of the HV indicate better approximations while lower values of the IGD indicate better approximations. In order to verify any statistical difference in the average performance given the different algorithms, the Pairwise Wilcoxon Rank Sum Tests was used, with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method.
