@@ -20,6 +20,11 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{booktabs} % For formal tables
 
+\usepackage{colortbl}
+
+\definecolor{maroon}{cmyk}{0,0.87,0.68,0.32}
+
+\newcommand{\gray}{\rowcolor[gray]{.90}}
 
 % Copyright
 %\setcopyright{none}
@@ -55,7 +60,7 @@
 
 \begin{document}
 %\title{MOEA/D - New Resource Allocation Functions Diversity Based}
-\title{Resource Allocation and MOEA/D \\ New Priority Functions Based on Diversity}
+\title{Using Diversity as a Priority Function for Resource Allocation on MOEA/D}
 \titlenote{Produces the permission block, and
   copyright information}
 %\subtitle{Subtitle}
@@ -141,12 +146,10 @@
 
 \input{1_intro.tex}
 \input{2_stateoftheart.tex}
-\input{2_lunarproblem.tex}
 \input{3_method.tex}
 \input{4_experimentaldesign.tex}
 \input{5_results.tex}
 \input{6_conclusion.txt.tex}
-
 \clearpage
 
 \bibliographystyle{ACM-Reference-Format}

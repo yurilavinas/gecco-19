@@ -22,10 +22,9 @@
 	%\vspace{-1em}
 \end{algorithm}
 
+In this study we only use the basic algorithm framework of MOEA/D-GRA, in Algorithm~\ref{alg1}. This Algorithm describes MOEA/D with priority functions. Except for line 4, in which a subproblem may not be part of the group that is going to be iterated and for line 7, in which the priority function is calculated, the whole procedure is similar to the MOEA/D-DE~\cite{zhang2009performance}. Likewise, all reproduction procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. We highlight that the neighborhood is only calculated in the initialization period.
 
-
-
-Algorithm~\ref{alg1} describes MOEA/D with priority functions. Except for line 4, in which a subproblem may not be part of the group that is going to be iterated and for line 7, in which the priority function is calculated, the whole procedure is similar to the MOEA/D-DE~\cite{zhang2009performance}. Likewise, all reproduction procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. It is important to highlight that the neighborhood is only calculated in the initialization period.
+In contrast to Zhou and Zhang in the MOEA/D-GRA, however, we only consider the basic algorithm and no other variant that it was introduced in their work~\cite{zhou2016all}, such as the new replacement procedure introduced. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation. Therefore, our new functions based on diversity are then easily integrated to the MOEA/D framework.
 
 %The update procedure is described The algorithm~\ref{alg2}, as in MOEA/D-GRA~\cite{zhou2016all}.
 The decomposition method used is the Simple-Lattice Design (SLD), the scalar aggregation function used is Weighted Sum (WS), the update strategy used is the Restricted update strategy and finally we performed a simple linear scaling of the objectives to the interval [0, 1].
@@ -41,24 +40,28 @@ Independently of the method used to calculate the priority function, we initiali
 
  It should also be noticed that once less than $3$ or less subproblems would be improved in a given iteraction $i$, we reset the priority vector $u = 1$  and all subproblems will be chosen for offspring reproduction at the that $i$ iteraction.
 
-\subsection{Priority Function - "Spectral" Norm} 
+\subsection{2-Norm of the difference of current solutions and their parents} 
 
 \begin{algorithm}[t]
-	\caption{"spectral" norm}\label{alg3}
+	\caption{2-norm}\label{alg3}
 	\begin{algorithmic}[1]
 		
 		\State Input: NEW new incumbent solutions; OLD, previous iteraction incumbent solutions; N, the population size.
-		\For {i=1 to N}
-		\State u[i] = calculate the "spectral" norm of NEW[i] - OLD[i]
+		\For {i=1 to N} 
+			\State u[i] = $||$New[i] - OLD[i]$||$
 		\EndFor
 		\State u = scale (u) // between 0 and 1\\
 	\Return u
 	\end{algorithmic}
 \end{algorithm}
 
-The priority function proposed that considers diversity on the objective space is based on the "spectral" norm (or 2-norm), which is the which is the largest singular-value (SVD) of the difference between the offspring solution minus the parent solution. Algorithm~\ref{alg3} gives the details on implementation. 
+The priority function proposed that considers diversity on the objective space is based on the 2-norm,
 
-The idea of the "spectral" norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Therefore more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
+\begin{equation}
+ \text{2 norm}_i = ||\text{current solution} - \text{parent solution}||
+\end{equation}
+
+The idea of the 2-norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Therefore more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
 
 
 \subsection{Priority Function - MRDL} 
@@ -68,7 +71,7 @@ The idea of the "spectral" norm as priority function is that by using diversity 
 	\caption{MRDL}\label{alg2}
 	\begin{algorithmic}[1]
 		
-		\State Input: old MDRL (default value is 0); C, objective function values from the incumbent solutions; P, objective function values from the previous iteraction incumbent solutions; N, the population size.
+		\State Input: old MRDL (initial value is 0); C, objective function values from the incumbent solutions; P, objective function values from the previous iteraction incumbent solutions; N, the population size.
 		\For {i=1 to $|C|$}
 		\State find $h \in |P|$ where  ($P_h \succeq C_i$) and $||P_h - C_i  ||$ is minimal.
 		\State $d.conv_{y} = C_i - P_h$.
@@ -83,8 +86,8 @@ The idea of the "spectral" norm as priority function is that by using diversity 
 		\EndFor
 		MDRL[i] = maximum RDL
 		\EndFor
-		\State u = scale (MDRL - old MDRL) // between 0 and 1\\
-	\Return u, MDRL
+		\State u = 1 - scale (MRDL - old MRDL) // between 0 and 1\\
+	\Return u, MRDL
 	\end{algorithmic}
 \end{algorithm}
 
@@ -100,11 +103,6 @@ Now, we move on how to calculate MRDL. Prior to scalarizing it between $0$ and $
 \Gamma_{i}^{p \rightarrow c} = \underset{i=1,...,k}{\max} \Gamma_{d.conv_{y}}^{p \rightarrow c}.
 \end{equation}
 
-%and then 
-%
-%\begin{equation}
-%u_i = \Gamma^{p \rightarrow c}_i -  \Gamma^{p \rightarrow c}_j, \text{with  $1,...,N$.}
-%\end{equation}
 
 
 At every iteraction and each incumbent solution, we need to estimate $k$ convergence directions (shown later)  and then we compute the Relative Diversity Loss (RDL) for each of these $k$ convergence directions. The maximum value among  these $k$ convergence directions is chosen as the MRDL for that incumbent solution.
@@ -116,7 +114,7 @@ At every iteraction and each incumbent solution, we need to estimate $k$ converg
 \Gamma_{d.conv_{y}}^{p \rightarrow c} = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}.
 \end{equation}
 
-The numerator in~\ref{rdl} is the closest distance between the parent solution ($p$) to the convergence direction $(c_r - p_r)$. While, the denominator in~\ref{rdl} is the closest distance between the offspring solution ($c$) to the convergence direction $(c_r - p_r)$. %The projections of $p\prime$ and $c\prime$ objective vectors onto the convergence direction $d.conv_{y}$ are $proj_{d.conv_{y}}p \prime$ and $proj_{d.conv_{y}}c \prime$.
+%The numerator in~\ref{rdl} is the closest distance between the parent solution ($p$) to the convergence direction $(c_r - p_r)$. While, the denominator in~\ref{rdl} is the closest distance between the offspring solution ($c$) to the convergence direction $(c_r - p_r)$. %The projections of $p\prime$ and $c\prime$ objective vectors onto the convergence direction $d.conv_{y}$ are $proj_{d.conv_{y}}p \prime$ and $proj_{d.conv_{y}}c \prime$.
 
 $p\prime$ and $c\prime $ are given by:
 \vspace{-1em}
@@ -137,11 +135,11 @@ proj_{d.conv_{y}}p \prime = \frac {{d.conv_{y}} \cdot {p \prime}} {|{p \prime}|^
 While the norm of $p \prime - proj_{d.conv_{y}}p \prime$ is calculated as follows.
 
 \begin{equation}
-||p \prime - proj_{d.conv_{y}}p \prime|| = \text{"spectral" norm}(p \prime - proj_{d.conv_{y}}p \prime)
+||p \prime - proj_{d.conv_{y}}p \prime|| = \text{2-norm}(p \prime - proj_{d.conv_{y}}p \prime)
 \end{equation}
 
 
-To estimate the convergence direction, $d.conv_{y}$, we need to have an offspring, $c_j$, that dominates at least one parent. Select a parent, $p_h$, solution that is closest to this offspring in the objective space.  For every weakly dominated parent, one convergence direction is calculated as in the next equation.
+To estimate the convergence direction, $d.conv_{y}$, we need to have an offspring, $c_j$, that dominates at least one parent. Select a parent, $p_h$, solution that is closest to this offspring in the objective space.  For every weakly dominated parent, one convergence direction is calculated as in the next equation. As in the study by Zitzler et al.~\cite{zitzler2003performance} study, weak dominance ($A \succeq B$) means that any solution in set B is weakly dominated by a solution in set A. However, this does not rule out equality, because $A \succeq A$ for all approximation sets $A$.
 \begin{equation}
 \label{1}
 d.conv_{y} = c_j - p_h
@@ -201,7 +199,7 @@ Here we give a brief description of the Relative Improvement, the priority funct
 	\end{algorithmic}
 \end{algorithm}
 
-Finally, we describe the last priority function studied in this work. The random priority function is used a a base for comparison. Given no information besides the size of the population, we define the vector of priority $u$ at random. Algorithm~\ref{alg4} gives the details on implementation. 
+Finally, we describe the last priority function studied in this work. The random priority function is used a base for comparison. Given no information besides the size of the population, we define the vector of priority $u$ at random. Algorithm~\ref{alg4} gives the details on implementation. 
 %
 %
 %

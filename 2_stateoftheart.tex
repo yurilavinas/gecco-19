@@ -3,7 +3,7 @@
 \subsection{Priority functions}
 
 %Following the discussion opened in the introduction, we need to define an utility function to allocate the number of evaluations to subproblems. 
-We define priority functions as one way of establishing preferences~\cite{chankong1983multiobjective},\cite{hansson2005decision} among solutions for the allocation of resources. Priority functions monitor the diversity of the solutions of an algorithm and may be used to decide how to distribute the computation resources among subproblems, guiding the search behavior of the algorithm. Also, they may be used as one way of deciding computational resources distributions among subproblems by guiding the distribution over generations~\cite{cai2015external}. 
+We define priority functions as one way of establishing preferences~\cite{chankong1983multiobjective},\cite{hansson2005decision} among solutions for the allocation of resources. Also, they may be used as one way of deciding computational resources distributions among subproblems by guiding the distribution over generations~\cite{cai2015external}. 
 
 Only a few studies have been concerned with resource allocation. We highlight: MOEA/D-DRA~\cite{zhang2009performance}; MOEA/D-GRA~\cite{zhou2016all};  MOEA/D-AMS~\cite{chiang2011moea}. According to Zhou and Zhang~\cite{zhou2016all}, MOEA/D-GRA may be seen as an generalization of MOEA/D-DRA and MOEA/D-AMS. The reason is that all of these algorithm use a very similar priority function. The priority function values, $u = \{u_1, u_2, ..., u_N\}$ for every subproblem $i=1,...,N$, is  defined as
 
@@ -12,15 +12,16 @@ Only a few studies have been concerned with resource allocation. We highlight: M
 \end{equation}
 
 
-This equation, the relative improvement, is based the assumption that if a subproblem has been improved over the last $\Delta T$ generations (\textit{old function value}), it should have a high probability of being improved over the next few generations. 
+This equation, the relative improvement (R.I.), is based the assumption that if a subproblem has been improved over the last $\Delta T$ generations (\textit{old function value}), it should have a high probability of being improved over the next few generations. 
 	
 The priority function used EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative} differ from the ones that we mentioned previously. In their case, the framework keeps two populations: one working population, and one external archive. The priority function is based on the contribution to the external archive from each subproblem in the search process. 
 
-Together these studies indicate that it is worth monitoring the algorithm behavior and guiding its search, but it is unclear how the priority functions influence into the results since in all the impact of using priority functions was not isolated. That is, in all of the work previously mentioned incremented MOEA/D with priority functions and some extra. For example, in MOEA/D-DRA a 10-tournament selection was used while in MOEA/D-GRA a new replacement strategy was also consider. MOEA/D-AMS proposes an adaptive mating selection mechanism as dynamically adjusts the mating pools of individuals are included. Finally, both EAG-MOEA/D and MOEA/D-CRA use archive population.
+Together these studies indicate that it is worth monitoring the algorithm behavior and guiding its search, but it is unclear how the priority functions influence into the results since in all the impact of using priority functions was not isolated. That is, in all of the work previously mentioned incremented MOEA/D with priority functions and some extra. For example, in MOEA/D-DRA a 10-tournament selection~\cite{zhang2009performance} was used while in MOEA/D-GRA a new replacement strategy was also consider~\cite{zhou2016all}. MOEA/D-AMS proposes an adaptive mating selection mechanism as dynamically adjusts the mating pools of individuals~\cite{chiang2011moea}. Finally, both EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative} use archive population.
 
-That said and based on recent the success of addressing the problem of resource allocation using priority functions, we aim to isolate priority functions to analyze the real impact of using them in the MOEA/D framework. In this study, we compare these two new priority functions with the relative improvement, equation~\ref{priority}, to further understand how priority functions influence the performance of MOEA/D framework.
 
 The new priority functions are defined focus in on improving the population diversity. We believe in the idea that diversity is a critical issues of a search process in any multi-objective algorithm. Therefore, we propose to use priority functions that address lack of diversity aiming to make solutions better spread among each other. These two priority functions focus on different aspects of the diversity: solutions better spread along the Pareto Set (diversity on the decision space) and solutions better spread along the Pareto Front (diversity on the objective space).
+
+That said and based on recent the success of addressing the problem of resource allocation using priority functions, we aim to isolate priority functions to analyze the real impact of using them in the MOEA/D framework. In this study, we compare these two new priority functions with the R.I., equation~\ref{priority}, to further understand how priority functions influence the performance of MOEA/D framework.
 
 
 
@@ -37,7 +38,8 @@ Among the metrics that only measure diversity, there are mainly two groups. The 
 
 The online group includes: sigma method~\cite{mostaghim2003strategies}  (PF lies in the positive objective space); entropy of the solutions by using Parzen window density estimation-\cite{tan2008evolutionary} (sensitive to kernel width); and maximum relative diversity loss, MRDL, ~\cite{gee2015online} (expensive $O(N^2)$, with $N$ being the size of the parent population).
 
-In this work, we consider the maximum relative diversity loss as the first priority function since it targets diversity on the objective space. To deal with diversity on the decision space we consider the similarity of decision vectors given by the "spectral" norm. These two new functions are then integrated to the MOEA/D framework and the resource allocation procedure is similar as the one in MOEA/D-GRA. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation.
+In this work, we consider the maximum relative diversity loss as the first priority function since it targets diversity on the objective space. To deal with diversity on the decision space we consider the similarity of decision vectors of consecutive iteractions given by the 2-norm. The 2-norm is defined similarly as the R.I., since in both a difference between vectors values from distinct iteractions. However there are two important differences between R.I. and 2-Norm priority function. The first is that while the R.I. considers the function values of solutions the 2-Norm considers its decision values. The second difference is that in R.I. the next step is scalarizing the values between 0 and 1 and in the 2-Norm priority function, the 2-Norm value of that difference is computed prior to scalarizing. 
+
 
 
 

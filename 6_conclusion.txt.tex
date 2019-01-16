@@ -1,15 +1,7 @@
 \section{Conclusion}
 
-Using priority functions do help
+In this paper, we have proposed two new priority functions, related to diversity. One based on the MRDL focus on diversity on the objective space while the other focus on diversity on the decision space. We then compared the results with the priority function from the MOEA/D-DRA, R.I. and the MOEA/D-DE variant.
 
-Using norm helps more
+We understand that using priority functions can improve the performance of MOEA/D-DE. We also realize that using a priority functions that is based on diversity, as the Norm gave very good results, even better than the R.I. a common priority function from the literature. Therefore, we suggest that this is a direction that should be further explore, for example in real-world problems. Surprisingly, since we expected that MRDL would give the best results in terms of improvement in performance, but it barely helped. The reason might be that to it considers the diversity of a solution against all the population. The two best priority functions consider only the a relationship of the current solution against its parent.
 
-We expected that MRDL would help a lot, but it barely helped. Maybe more iteractions are needed.
-
-%In this paper, we proposed a new utility function based on a geometrical perspective for MOEA/D, and the resultant algorithm is called MOEA/D-RAD. This algorithm determines the computational resource assigned to each subproblem, based on its contribution to the overall diversity of the population.
-%
-%We have compared the new approach with the MOEA/D-DE and a variant with generalized resource allocation strategy, MOEA/D-DRA, and the experimental results suggested our method performs well on many test problems.
-%
-%As mentioned before in this study, there are two ways of dealing with an unbalanced exploration of the search space: one is to allocate resources based on an utility functions while the second is to modify the behavior of the algorithm adaptively. %We understand that these two forms of addressing the same problem are not conflicting, therefore, in future works, we may explore using utility functions as a feedback information for adaptation strategies.
-%
-%A further, more extensive study could assess the effects of utility functions on MOEA/D-RAD by better understanding its relationship with the others components of the MOEA/D framework.
+There are many other components and variants of MOEA/D and is interesting to combine them with the 2 norm priority function to them. Then we can better understand the relationship of priority functions based on diversity with the others components and variants of the MOEA/D framework. How to define more efficient and effective utility functions for different problems is also worth further investigation as well as verify the results of using priority function in others real-world problems.

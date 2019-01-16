@@ -24,7 +24,7 @@
 %\end{table}
 
 
-The question that we want to answer is how MOEA/D-DE performs when combined with: no priority function (none) and the priority functions "spectral" norm, MRDL, relative improvement and random. To answer that question we apply MOEA/-DE with the 5 priority functions to the two artificial benchmark problems and one real-world problem.
+The question that we want to answer is how MOEA/D-DE performs when combined with: no priority function (none) and the priority functions 2-norm, MRDL, relative improvement and random. To answer that question we apply MOEA/-DE with the 4 priority functions to two artificial benchmark problems and the Lunar Landing real-world problem and we compared the performance against the results of the MOEA/-DE.
 
 \subsection{Artificial Benchmark Functions}
 
@@ -45,4 +45,4 @@ For every combination, most of the parameters are as follows. The population siz
 
 We perform statistical tests on the hypervolume (HV) metric values and Inverted Generational Distance (IGD) for measuring the quality of a set of obtained non-dominated solutions found by the algorithms on the both DTLZ and UF benchmark problems. Before calculating the HV value, the objective function was scaled between $0$ and $1$. The reference point for the HV calculation was set to $(1, 1)$. While, for the real-world lunar landing problem while for the lunar,  we only perform statistical tests on the hypervolume (HV) metric values and the reference point for the HV calculation was set to $(1, 0, 1)$. 
 
-Higher values of the HV indicate better approximations while lower values of the IGD indicate better approximations. In order to verify any statistical difference in the average performance given the different algorithms, the Pairwise Wilcoxon Rank Sum Tests was used, with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method.
+Higher values of the HV indicate better approximations while lower values of the IGD indicate better approximations. In order to verify any statistical difference in the average performance given the different algorithms, the Pairwise Wilcoxon Rank Sum Tests was used, with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method. For reproducibility the code is made available at XXX.
