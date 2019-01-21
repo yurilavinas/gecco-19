@@ -36,7 +36,7 @@ We understand that priority functions provides an important property. It provide
 
 In this work we chose to focus on studying four different characteristics: diversity on the objective space, diversity in the decision space, no information (random values) and the relative improvement, from MOEA/D-DRA as our priority functions. Next we give a brief explanation of why we chose to consider these  our methods and we describe the details of how to calculate them.
 
-Independently of the method used to calculate the priority function, we initialize the value of the vector $u=1$, as in MOEA/D-DRA. As in DRA and GRA we have a learning period, $\Delta T$ generations (\textit{old function value}). Here $\Delta T=20$.   A sensitivity analyzes should be performed for deciding suitable initial values for $u$ and for $\Delta T$.
+Independently of the method used to calculate the priority function, we initialize the value of the vector $u=1$, as in MOEA/D-DRA. As in DRA and GRA we have a learning period, $\Delta T$ generations (\textit{old function value}). Here $\Delta T=20$ for artificial benchmarks, as in MOEA/D-GRA~\cite{zhou2016all}, while for the real-world problems, we chose $\Delta T=2$, by trial and error. A sensitivity analyzes should be performed for deciding suitable initial values for $u$ and for $\Delta T$.
 
  It should also be noticed that once less than $3$ or less subproblems would be improved in a given iteraction $i$, we reset the priority vector $u = 1$  and all subproblems will be chosen for offspring reproduction at the that $i$ iteraction.
 

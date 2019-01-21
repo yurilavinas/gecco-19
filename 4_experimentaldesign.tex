@@ -29,6 +29,16 @@ The question that we want to answer is how MOEA/D-DE performs when combined with
 \subsection{Artificial Benchmark Functions}
 
 We compared the variants of priority functions using the DTLZ benchmark functions from "Scalable test problems for evolutionary multi-objective optimization" with 100 dimensions and $k = dimensions - \text{number of objectives} + 1$, where the number of objectives is $2$ or $3$. We also consider the UF benchmark functions from~\cite{zhang2008multiobjective}, also with 100 dimensions. 
+.
+
+\subsection{Parameter Settings - Artificial benchmarks}
+
+	For every combination, most of the parameters are as follows. The population size $N = 350$, the update size $nr = 2$, the neighborhood size $T = 20$, and the neighborhood search probability $\delta_p = 0.9$. The DE mutation operator value is $phi=0.5$. The Polynomial mutation operator values are $\eta_m 20$ and $p_m = 0.03333333$~\cite{campelo2018moeadr}. The number of executions is 21. At each execution, the number of functions evaluations is 70000.
+
+We perform statistical tests on the hypervolume (HV) metric values and Inverted Generational Distance (IGD) for measuring the quality of a set of obtained non-dominated solutions found by the algorithms on the both DTLZ and UF benchmark problems. Before calculating the HV value, the objective function was scaled between $0$ and $1$. The reference point for the HV calculation was set to $(1, 1)$. While, for the real-world lunar landing problem while for the lunar,  we only perform statistical tests on the hypervolume (HV) metric values and the reference point for the HV calculation was set to $(1, 0, 1)$. 
+
+Higher values of the HV indicate better approximations while lower values of the IGD indicate better approximations. In order to verify any statistical difference in the average performance given the different algorithms, the Pairwise Wilcoxon Rank Sum Tests was used, with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method. For reproducibility the code is made available at XXX.
+
 
 \subsection{Real World Benchmark Function}
 
@@ -37,12 +47,11 @@ The Lunar Landing problem is a real-world problem that simulates the selection o
 
 This is a a minimization design problem in which the two decision variables are the longitude and latitude with the objectives being: the number of continuous shade days, the total communication time (in reality, this is a maximization problem that was inverted with the goal of consistency), and the inclination angles. 
 
-Although the number of design variables is small as two (latitude and longitude), it is considered to be a severe constrained problem due to the presence of two craters. In values, the two constraints are defined as continuous shade days  being $ < 0.05$ while inclination angles being $<0.3$.
+Although the number of design variables is small as two (latitude and longitude), it is considered to be a severe constrained problem due to the presence of two craters. In values, the two constraints are defined as continuous shade days  being $ < 0.05$ while inclination angles being $<0.3$
 
-\subsection{Parameter Settings}
+\subsection{Parameter Settings - Lunar Landing problem}
 
-For every combination, most of the parameters are as follows. The population size $N = 350$, the update size $nr = 2$, the neighborhood size $T = 20$, and the neighborhood search probability $\delta_p = 0.9$. The DE mutation operator value is $phi=0.5$. The Polynomial mutation operator values are $\eta_m 20$ and $p_m = 0.03333333$~\cite{campelo2018moeadr}. The number of executions is 21. At each execution, the number of functions evaluations is 70000.
+He highlight only the parameters that differ from the settings for the artificial benchmarks. Since this problems is a severe constrained one, we chose 
+the population size $N = 5050$ and the number of functions evaluations is 30000/60000. 
 
-We perform statistical tests on the hypervolume (HV) metric values and Inverted Generational Distance (IGD) for measuring the quality of a set of obtained non-dominated solutions found by the algorithms on the both DTLZ and UF benchmark problems. Before calculating the HV value, the objective function was scaled between $0$ and $1$. The reference point for the HV calculation was set to $(1, 1)$. While, for the real-world lunar landing problem while for the lunar,  we only perform statistical tests on the hypervolume (HV) metric values and the reference point for the HV calculation was set to $(1, 0, 1)$. 
-
-Higher values of the HV indicate better approximations while lower values of the IGD indicate better approximations. In order to verify any statistical difference in the average performance given the different algorithms, the Pairwise Wilcoxon Rank Sum Tests was used, with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method. For reproducibility the code is made available at XXX.
+We perform statistical tests on the hypervolume (HV) metric values for measuring the quality of a set of obtained non-dominated solutions found by the algorithms on the Lunar Landing problem.The reference point for the HV calculation was set to $(1, 0, 1)$. Higher values of the HV indicate better approximations while lower values. In order to verify any statistical difference in the average performance given the different algorithms, the Pairwise Wilcoxon Rank Sum Tests was used, with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method. For reproducibility the code is made available at XXX.
