@@ -22,12 +22,12 @@
 	%\vspace{-1em}
 \end{algorithm}
 
-In this study we only use the basic algorithm framework of MOEA/D-GRA, in Algorithm~\ref{alg1}. This Algorithm describes MOEA/D with priority functions. Except for line 4, in which a subproblem may not be part of the group that is going to be iterated and for line 7, in which the priority function is calculated, the whole procedure is similar to the MOEA/D-DE~\cite{zhang2009performance}. Likewise, all reproduction procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. We highlight that the neighborhood is only calculated in the initialization period.
+In this study we use the basic algorithm framework~\ref{alg1}with priority functions of MOEA/D-GRA. In contrast to  MOEA/D-GRA we only consider the basic algorithm and no other variant. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation. Therefore, our new functions based on diversity are then easily integrated to the MOEA/D framework.Except for line 4, in which a subproblem may not be part of the group that is going to be iterated and for line 7, in which the priority function is calculated, the whole procedure is similar to the MOEA/D-DE~\cite{zhang2009performance}. All reproduction procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. We highlight that the neighborhood is only calculated in the initialization period.
 
-In contrast to Zhou and Zhang in the MOEA/D-GRA, however, we only consider the basic algorithm and no other variant that it was introduced in their work~\cite{zhou2016all}, such as the new replacement procedure introduced. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation. Therefore, our new functions based on diversity are then easily integrated to the MOEA/D framework.
+
 
 %The update procedure is described The algorithm~\ref{alg2}, as in MOEA/D-GRA~\cite{zhou2016all}.
-The decomposition method used is the Simple-Lattice Design (SLD), the scalar aggregation function used is Weighted Sum (WS), the update strategy used is the Restricted update strategy and finally we performed a simple linear scaling of the objectives to the interval [0, 1].
+The decomposition method used is the Simple-Lattice Design (SLD), the scalar aggregation function used is Weighted Sum (WS), the update strategy used is the Restricted update strategy and we performed a simple linear scaling of the objectives to [0, 1].
 
 
 %\subsection{Priority Functions}
@@ -40,7 +40,7 @@ Independently of the method used to calculate the priority function, we initiali
 
  It should also be noticed that once less than $3$ or less subproblems would be improved in a given iteraction $i$, we reset the priority vector $u = 1$  and all subproblems will be chosen for offspring reproduction at the that $i$ iteraction.
 
-\subsection{Priority Function - 2-Norm of the difference of current solutions and its parents} 
+\subsection{Priority Function - Norm of the difference of current solutions and its parents} 
 
 \begin{algorithm}[t]
 	\caption{2-norm}\label{alg3}
@@ -61,7 +61,7 @@ The priority function proposed that considers diversity on the objective space i
  \text{2 norm}_i = ||\text{current solution} - \text{parent solution}||.
 \end{equation}
 
-The idea of the 2-norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Therefore more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
+The idea of the 2-Norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Hence more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
 
 
 \subsection{Priority Function - MRDL} 
@@ -182,9 +182,7 @@ $D_p$ in equation~\ref{D_p} denotes the index set of parent solutions which are 
 	\end{algorithmic}
 \end{algorithm}
 
-Here we give a brief description of the Relative Improvement (R.I., the priority function used in MOEA/D-DRA, MOEA/D-GRA and many others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}.  For more information refer to~\cite{zhang2009performance} and~\cite{zhou2016all}.
-
-R.I. was first introduced in the context of the unconstrained MOEA competition in the CEC 2009~\cite{zhang2009performance}, being the winner of that competition~\cite{zhang2008multiobjective}. This competition also introduced the UF benchmark functions.
+Here we give a brief description of the Relative Improvement (R.I.), the priority function used in MOEA/D-DRA, MOEA/D-GRA and many others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}. R.I. was first introduced in the context of the unconstrained MOEA competition in the CEC 2009~\cite{zhang2009performance}, being the winner of that competition~\cite{zhang2008multiobjective}. This competition also introduced the UF benchmark functions.
 
 \subsection{Priority Function - Random}
 
