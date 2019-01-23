@@ -32,7 +32,7 @@ The decomposition method used is the Simple-Lattice Design (SLD), the scalar agg
 
 %\subsection{Priority Functions}
 
-We understand that priority functions provides an important property. It provides ways of designing MOEA/D variants that could focus on a desired characteristics, such as diversity, performance contribution, convergence to a specific region of the Pareto Front or others. This is possible because different methods can be used as priority functions to create the vector $u$ in algorithm~\ref{alg1}. 
+We understand that priority functions provides an important property. It provides ways of designing MOEA/D variants that could focus on a desired characteristics, such as diversity, performance contribution, convergence to a specific region of the PF or others. This is possible because different methods can be used as priority functions to create the vector $u$ in algorithm~\ref{alg1}. 
 
 In this work we chose to focus on studying four different characteristics: diversity on the objective space, diversity in the decision space, no information (random values) and the relative improvement, from MOEA/D-DRA as our priority functions. Next we give a brief explanation of why we chose to consider these  our methods and we describe the details of how to calculate them.
 
@@ -40,7 +40,7 @@ Independently of the method used to calculate the priority function, we initiali
 
  It should also be noticed that once less than $3$ or less subproblems would be improved in a given iteraction $i$, we reset the priority vector $u = 1$  and all subproblems will be chosen for offspring reproduction at the that $i$ iteraction.
 
-\subsection{2-Norm of the difference of current solutions and their parents} 
+\subsection{Priority Function - 2-Norm of the difference of current solutions and its parents} 
 
 \begin{algorithm}[t]
 	\caption{2-norm}\label{alg3}
@@ -58,7 +58,7 @@ Independently of the method used to calculate the priority function, we initiali
 The priority function proposed that considers diversity on the objective space is based on the 2-norm,
 
 \begin{equation}
- \text{2 norm}_i = ||\text{current solution} - \text{parent solution}||
+ \text{2 norm}_i = ||\text{current solution} - \text{parent solution}||.
 \end{equation}
 
 The idea of the 2-norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Therefore more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
@@ -182,9 +182,10 @@ $D_p$ in equation~\ref{D_p} denotes the index set of parent solutions which are 
 	\end{algorithmic}
 \end{algorithm}
 
-Here we give a brief description of the Relative Improvement, the priority function used in MOEA/D-DRA, MOEA/D-GRA and many others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}.  For more information refer to~\cite{zhang2009performance} and~\cite{zhou2016all}.
-%
-%
+Here we give a brief description of the Relative Improvement (R.I., the priority function used in MOEA/D-DRA, MOEA/D-GRA and many others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}.  For more information refer to~\cite{zhang2009performance} and~\cite{zhou2016all}.
+
+R.I. was first introduced in the context of the unconstrained MOEA competition in the CEC 2009~\cite{zhang2009performance}, being the winner of that competition~\cite{zhang2008multiobjective}. This competition also introduced the UF benchmark functions.
+
 \subsection{Priority Function - Random}
 
 \begin{algorithm}[t]
