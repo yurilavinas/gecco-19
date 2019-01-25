@@ -29,7 +29,7 @@ difficulty is the Relative Improvement, which calculates how much a subproblem
 has improved in recent iterations.
 
 % Motivation for this approach
-In this paper, we propose a new approach for estimating difficulty and
+Here, we propose a new approach for estimating difficulty and
 calculating priority in Resource Allocation for MOEA/D. Our approach uses the
 idea of \emph{diversity} in decision space and in objective space to calculate
 the priority of solutions. Our motivation for this choice is that the quality of
@@ -39,11 +39,14 @@ encouraging the algorithm to spend more computational effort in regions that are
 not yet well explored.
 
 % Simplify the paragraph below (important point is an outline of how we calculate diversity in both cases (In this paper, we define a priority function based on diversity using .........))
-The aim of this study is to explore the relationship between subproblems and priority functions in the context of MOEA/D. Here, we propose a two new functions based to diversity for defining priorities. The first considers the integration of an online diversity metric based on a geometrical perspective~\cite{gee2015online} as a direct way to define the priority function. The second addresses diversity in the decision space using the 2-norm. We that these priority functions are able monitor the diversity of the solutions of an algorithm and may be used to decide how to distribute the computation resources among subproblems given this important issue, therefore better guiding the search behavior of the algorithm.
+In this paper, we define a priority function based on diversity on the objective space using the MRDL, proposed by Gee~\ref{gee2015online}. The MRDL is an online diversity metric based on a geometrical perspective and indicates the loss of diversity related to a solution to the whole population. We also define a priority function based on diversity on the decision space using the 2-Norm. It compares solutions by measuring the norm of  the difference of these solutions. We understand that these priority functions are able to monitor diversity during the execution of the algorithm guiding the search behavior of the algorithm.
+
 
 % Expand the paragraph below with more details on the results and conclusions
 % Use the abstract as inspiration. 
-The results found supported that idea, since in the real-world Lunar Landing problem these priority functions performed very well (with emphasis on the results of the 2-norm). In the UF benchmark problem only 2-norm performed well, followed closely by the relative improvement. All code is available for reproducibility purpose.
+We compare the new approach with the Relative Improvement or not using priority functions at all. The results show that focusing on diversity leads to better results on the metrics Hypervolume (HV) and Inverted Generational Distance (IGD) and also lead to a higher percentage of non-dominated solutions. The diversity on the decision space shows better performance on the benchmark function,  generally being better than using the relative improvement. It came to our surprise that the diversity on the objective space barely improve the results of not using priority functionsm in the artificial benchmarks. On the other hand, using diversity on the objective space as a priority function excels in the Lunar Landing problem.
+
+%The results found supported that idea, since in the real-world Lunar Landing problem these priority functions performed very well (with emphasis on the results of the 2-Norm). In the UF benchmark problem only 2-Norm performed well, followed closely by the relative improvement. All code is available for reproducibility purpose.
 
 % This balance is defined by the concept of ``pareto dominance''. Given two
 % solutions vectors $u, v$ in $\mathbb{R}^{D}$, $u$  Pareto-dominates $v$, we
