@@ -1,42 +1,77 @@
 \section{Introduction}
 
-Multi-objective Optimization Problems (MOPs) are problems with multiple, conflicting objectives. This composition is characterized by a set of conflicting objective functions resulting in a set of optimal compromise solutions. 
+% Define MOP
+Multi-objective Optimization Problems (MOP) are maximization (or minimization)
+problems characterized by multiple, conflicting objective functions. It arises
+in real world applications that require a compromise among multiple objectives.
+Thet of optimal trade off solutions in the decision space is the \emph{Pareto
+Set}, and the image of this set in the objective space is the \emph{Pareto
+Front}. Finding a good approximation of the Pareto Front is a hard problem for
+which multiple Evolutionary Algorithms have been proposed.
 
-%These $m$ multiple objective functions must be optimized simultaneously:
+% Mention that MOEAD is a good approach for MOP
+The Multi-Objective Evolutionary Algorithm Based on Decomposition
+(MOEA/D)~\cite{zhang2007moea} is an effective algorithm for solving MOPs. The
+key idea of the MOEA/D is that the multi-objective optimization problem is
+decomposed into a set of single objectives subproblems All subproblems
+are then solved in parallel.
 
-\vspace{-1em}
-\begin{align}\label{min_problem}
-\text{minimize} f(x) = (f_1(x), ..., f_{m}(x)), \text{$x \in \mathbb{R}^{D}$},
-\end{align}
+% Mention that MOEAD all problems are treated equally, but in actually they are
+In the original MOEA/D, all subproblems are treated uniformly, in the sense that
+all of them receive the same computational effort. However, it has been observed
+that some subproblems are harder than others, and take more effort to converge
+to an optimal solution~\cite{zhou2016all}. Because of this, \emph{Resource
+Allocation} approaches have been proposed to allocate different amount of
+computational effort to different subproblems, based on an estimation of the
+relative difficulty of each subproblem~\cite{zhou2016all, zhang2009performance,
+kang2018collaborative}. The most popular approach for estimating subproblem
+difficulty is the Relative Improvement, which calculates how much a subproblem
+has improved in recent iterations.
 
-where $m$ is the number of objective functions and $\mathbb{R}^m$ is the objective function space. $x \in \mathbb{R}^{D} = \{x_1, x_2, ..., x_D\}$ is a D-dimensional vector which represents a candidate solution with ${D}$ variables, $f: \mathbb{R}^{D} \rightarrow \mathbb{R}^{m}$ is a vector of objective functions.% and $\Omega$ is the feasible decision space. $\Omega$ is defined as:
+% Motivation for this approach
+In this paper, we propose a new approach for estimating difficulty and
+calculating priority in Resource Allocation for MOEA/D. Our approach uses the
+idea of \emph{diversity} in decision space and in objective space to calculate
+the priority of solutions. Our motivation for this choice is that the quality of
+a MOP solution set is often evaluated by the diversity in the objective space.
+If we assign higher priority for regions with lower diversity, we are
+encouraging the algorithm to spend more computational effort in regions that are
+not yet well explored.
 
-%\begin{align}
-%\Omega =\{x \text{ in } \mathbb{R}^{n_v} | g_i(x) \leq 0 \text{ } \forall_i \text{ and } h_i(x) = 0 \text{ } \forall_j \},
-%\end{align}
-These objectives often conflict with each other, as there is no vector $x \in \mathbb{R}^{D}$ that minimizes all the objectives at the same time. Consequently, the goal of the MOP optimization algorithm is to find the approximate set of solutions that balance the different objectives in an optimal way.
+% Simplify the paragraph below (important point is an outline of how we calculate diversity in both cases (In this paper, we define a priority function based on diversity using .........))
+The aim of this study is to explore the relationship between subproblems and priority functions in the context of MOEA/D. Here, we propose a two new functions based to diversity for defining priorities. The first considers the integration of an online diversity metric based on a geometrical perspective~\cite{gee2015online} as a direct way to define the priority function. The second addresses diversity in the decision space using the 2-norm. We that these priority functions are able monitor the diversity of the solutions of an algorithm and may be used to decide how to distribute the computation resources among subproblems given this important issue, therefore better guiding the search behavior of the algorithm.
 
-This balance is defined by the concept of ``pareto dominance''. Given two solutions vectors $u, v$ in $\mathbb{R}^{D}$, $u$  Pareto-dominates $v$, we say that denoted by $f(u) \prec f(v)$, if and only if $f_k(u) \leq f_k(v), \forall_k \in \{1,..., m\}$ and $ f(u) \neq f(v)$. Likewise, a solution $x \in \mathbb{R}^{D}$ is considered Pareto-Optimal if there exists no other solution $y \in \mathbb{R}^{D}$ such that $f(y) \succ f(x)$, i.e., if $x$ is non-dominated in the feasible decision space. A non-dominated solution exists if no other solution provides a better trade-off in all objectives. 
+% Expand the paragraph below with more details on the results and conclusions
+% Use the abstract as inspiration. 
+The results found supported that idea, since in the real-world Lunar Landing problem these priority functions performed very well (with emphasis on the results of the 2-norm). In the UF benchmark problem only 2-norm performed well, followed closely by the relative improvement. All code is available for reproducibility purpose.
 
-Consequently, the set of all Pareto-Optimal solutions is known as the Pareto-Optimal Set (PS), while the image of this set is referred to as the Pareto-optimal Front (PF).\\
-\vspace{-1em}
-\begin{equation}
-PS = \{x \in \mathbb{R}^{D} | \nexists y \in \mathbb{R}^{D} : f(y) \succ f(x)  \},
-\end{equation}
-\vspace{-1em}
-\begin{equation}
-PF = \{f(x) | x \in PS \}.
-\end{equation}
+% This balance is defined by the concept of ``pareto dominance''. Given two
+% solutions vectors $u, v$ in $\mathbb{R}^{D}$, $u$  Pareto-dominates $v$, we
+% say that denoted by $f(u) \prec f(v)$, if and only if $f_k(u) \leq f_k(v),
+% \forall_k \in \{1,..., m\}$ and $ f(u) \neq f(v)$. Likewise, a solution $x \in
+% \mathbb{R}^{D}$ is considered Pareto-Optimal if there exists no other solution
+% $y \in \mathbb{R}^{D}$ such that $f(y) \succ f(x)$, i.e., if $x$ is
+% non-dominated in the feasible decision space. A non-dominated solution exists
+% if no other solution provides a better trade-off in all objectives.
 
-%Multi-objective evolutionary algorithms (MOEAs) are one of the most widely used groups of algorithms for finding approximations to the PF of a MOP. They are characterized by their ability to find good approximations to PF in a single run~\cite{zhou2011multiobjective}. In recent years, there has been an increasing interest in studying MOEAs and with a primary concern of improving their general performance.% Among MOEAs, there are three major paradigms: Pareto domination-based approaches~\cite{deb2002fast},~\cite{zitzler2001spea2}; indicator-based approaches~\cite{beume2007sms},~\cite{zitzler2004indicator} and decomposition-based approaches~\cite{li2009multiobjective},~\cite{zhang2007moea}. 
+% Consequently, the set of all Pareto-Optimal solutions is known as the Pareto-Optimal Set (PS), while the image of this set is referred to as the Pareto-optimal Front (PF).\\
+% \vspace{-1em}
+% \begin{equation}
+% PS = \{x \in \mathbb{R}^{D} | \nexists y \in \mathbb{R}^{D} : f(y) \succ f(x)  \},
+% \end{equation}
+% \vspace{-1em}
+% \begin{equation}
+% PF = \{f(x) | x \in PS \}.
+% \end{equation}
 
-%Multi-objective evolutionary algorithms (MOEAs) are one of the most widely used groups of algorithms for finding approximations to the PF of a MOP. They are characterized by their ability to find good approximations to PF in a single run~\cite{zhou2011multiobjective}. In recent years, there has been an increasing interest in studying MOEAs and with a primary concern of improving their general performance. Among MOEAs, there are three major paradigms: Pareto domination-based approaches~\cite{deb2002fast}; indicator-based approaches~\cite{beume2007sms}; and decomposition-based approaches~\cite{zhang2007moea}. 
+%Multi-objective evolutionary algorithms (MOEAs) are one of the most widely used groups of algorithms for finding approximations to the PF of a MOP. They are characterized by their ability to find good approximations to PF in a single run~\cite{zhou2011multiobjective}. In recent years, there has been an increasing interest in studying MOEAs and with a primary concern of improving their general performance.% Among MOEAs, there are three major paradigms: Pareto domination-based approaches~\cite{deb2002fast},~\cite{zitzler2001spea2}; indicator-based approaches~\cite{beume2007sms},~\cite{zitzler2004indicator} and decomposition-based approaches~\cite{li2009multiobjective},~\cite{zhang2007moea}.
 
-%TODO: Da para escrever mais bonitinho depois (Deixar TODO p/ Claus)
-We are interested in analyzing the Multi-objective Evolutionary Algorithm based on Decomposition framework, MOEA/D~\cite{zhang2007moea}. It represents a class of population-based meta-heuristics for solving Multi Objective Problems. In
-this framework, each individual has a specific weight vector which is used to decompose the original multi-objective problem into simpler, single-objective subproblems by means of scalarizations. Each subproblem is then evaluated and its utility value is calculated by an aggregation function given the related weight vector. 
+%Multi-objective evolutionary algorithms (MOEAs) are one of the most widely used groups of algorithms for finding approximations to the PF of a MOP. They are characterized by their ability to find good approximations to PF in a single run~\cite{zhou2011multiobjective}. In recent years, there has been an increasing interest in studying MOEAs and with a primary concern of improving their general performance. Among MOEAs, there are three major paradigms: Pareto domination-based approaches~\cite{deb2002fast}; indicator-based approaches~\cite{beume2007sms}; and decomposition-based approaches~\cite{zhang2007moea}.
 
-In the original MOEA/D, each solution of a subproblem have the same amount of computational resource (number of iteractions). Each subproblem relates to a region of the PF. Since all of them are uniformly treated, it is expected that different regions of the would be more difficult to find approximations than other areas leading to an unbalanced exploration of the search space. 
+% We are interested in analyzing the Multi-objective Evolutionary Algorithm based on Decomposition framework, MOEA/D~\cite{zhang2007moea}. It represents a class of population-based meta-heuristics for solving Multi Objective Problems. In
+% this framework, each individual has a specific weight vector which is used to decompose the original multi-objective problem into simpler, single-objective subproblems by means of scalarizations. Each subproblem is then evaluated and its utility value is calculated by an aggregation function given the related weight vector.
+
+% In the original MOEA/D, each solution of a subproblem have the same amount of computational resource (number of iteractions). Each subproblem relates to a region of the PF. Since all of them are uniformly treated, it is expected that different regions of the would be more difficult to find approximations than other areas leading to an unbalanced exploration of the search space.
 %\begin{figure}[h]
 %	\centering
 %	\includegraphics[width=0.55\textwidth]{img/decomp2.png}
@@ -63,8 +98,4 @@ In the original MOEA/D, each solution of a subproblem have the same amount of co
 %
 %Another way, is allocating different number of evaluations to the subproblems based on some priority function. In a few recent works, a priority function (also called utility function) is used to prioritize resources given to subproblems that contribute more to the algorithm's search.  In the works of Zhang et al.~\cite{zhang2009performance} and Zhou et al.~\cite{zhou2016all} a priority function was proposed aiming to prioritize solutions based on a historical convergence information during different generations. Another approach was implemented in Kang et al.~\cite{kang2018collaborative}, where the priority function was based on the presence of a solution from the main population on a secondary population.
 
-Although researchers have not studied this problem in much detail, there have been some works that have discussed this matter. One way to address this problem is to allocate different number of evaluations to the subproblems based on some priority function. In a few recent works, a priority function (also called utility function) is used to prioritize resources given to subproblems that contribute more to the algorithm's search.  In the works of Zhang et al.~\cite{zhang2009performance} and Zhou et al.~\cite{zhou2016all} a priority function was proposed to prioritize solutions based on convergence information during different generations. Another approach was implemented in Kang et al.~\cite{kang2018collaborative}, where the priority function was based on the presence of a solution from the main population on a secondary population.
-
-The aim of this study is to explore the relationship between subproblems and priority functions in the context of MOEA/D. Here, we propose a two new functions based to diversity for defining priorities. The first considers the integration of an online diversity metric based on a geometrical perspective~\cite{gee2015online} as a direct way to define the priority function. The second addresses diversity in the decision space using the 2-norm. We that these priority functions are able monitor the diversity of the solutions of an algorithm and may be used to decide how to distribute the computation resources among subproblems given this important issue, therefore better guiding the search behavior of the algorithm. 
-
-The results found supported that idea, since in the real-world Lunar Landing problem these priority functions performed very well (with emphasis on the results of the 2-norm). In the UF benchmark problem only 2-norm performed well, followed closely by the relative improvement. All code is available for reproducibility purpose.
+% Although researchers have not studied this problem in much detail, there have been some works that have discussed this matter. One way to address this problem is to allocate different number of evaluations to the subproblems based on some priority function. In a few recent works, a priority function (also called utility function) is used to prioritize resources given to subproblems that contribute more to the algorithm's search.  In the works of Zhang et al.~\cite{zhang2009performance} and Zhou et al.~\cite{zhou2016all} a priority function was proposed to prioritize solutions based on convergence information during different generations. Another approach was implemented in Kang et al.~\cite{kang2018collaborative}, where the priority function was based on the presence of a solution from the main population on a secondary population.
