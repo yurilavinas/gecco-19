@@ -1,1 +1,28 @@
-Multi-objective Evolutionary Algorithm based on Decomposition, MOEA/D, decomposes multi-objective problems into single-objective subproblems. All subproblems are treated uniformly and there is no priority among them. Each subproblem is related to an area of the theoretical Pareto Front. It is expected that some areas would be more difficult to approximate than others, leading to an unbalanced exploration of the search space. To balance exploration "Resource Allocation" techniques that prioritize certain subproblems have been proposed. In this paper we investigate the priority functions used to decide  which subproblems a should receive more resources. We propose that using diversity as the priority criteria has a positive effect on resource allocation. We consider four different priority functions: Diversity on objective space, diversity on decision space, relative improvement (Used on MOEA/D-DRA), and a random priority function for control. WE conducted an experimental analysis on the DTLZ and UF benchmark functions and on the lunar lading real-problem and compared the famous MOEA/D-DE variant with each four priority functions and without it any. The results indicate that using priority functions based on diversity lead to better performance. We highlight the better results of the diversity on decision space working very well on DTLZ and UF benchmark functions while the the diversity on the objective space performed better in the Lunar Landing problem.
+The key characteristic of the Multi-Objective Evolutionary Algorithm Based on
+Decomposition (MOEA/D) is that the multi-objective problem is decomposed into
+multiple single-objective subproblems.
+%
+In standard MOEA/D, all subproblems receive the same computational effort.
+However, as each subproblem relates to different areas of the objective space,
+it is expected that some subproblems are more difficult than others.
+%
+Resource Allocation techniques allocates computational effort proportional to
+each subproblem's difficulty. This difficulty is estimated by a priority
+function. Using Resource Allocation, MOEA/D could spend less effort on easier
+subproblems and more on harders ones, improving efficiency.
+%
+In this paper, we investigate different priority functions. We propose that
+using diversity as the priority criteria results in better allocation of
+computational effort.
+%
+We propose two new priority functions: objective space diversity and decision
+space diversity.
+%
+We compare the proposed diversity based priority with previous approaches on the
+DTLZ and UF benchmarks, as well as on a real world problem about selecting a
+landing site for lunar exploration.
+%
+The proposed priority functions based on diversity performed better in terms of
+HV, IGD and percentage of non-dominated solutions. Decision space diversity was
+better on the benchmarks, while objective space diversity excelled on the lunar
+landing problem.
