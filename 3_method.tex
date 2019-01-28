@@ -22,19 +22,15 @@
 	%\vspace{-1em}
 \end{algorithm}
 
-In this study we use the basic algorithm framework~\ref{alg1}with priority functions of MOEA/D-GRA. In contrast to  MOEA/D-GRA we only consider the basic algorithm and no other variant. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation. Therefore, our new functions based on diversity are then easily integrated to the MOEA/D framework.Except for line 4, in which a subproblem may not be part of the group that is going to be iterated and for line 7, in which the priority function is calculated, the whole procedure is similar to the MOEA/D-DE~\cite{zhang2009performance}. All reproduction procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. We highlight that the neighborhood is only calculated in the initialization period.
+In this study we use the basic algorithm framework~\ref{alg1} with priority functions of MOEA/D-GRA. In contrast to MOEA/D-GRA we only consider the basic algorithm and no other variant. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation without a population archive. In consequence any priority functions might be easily integrated to MOEA/D framework. 
 
-
-
-%The update procedure is described The algorithm~\ref{alg2}, as in MOEA/D-GRA~\cite{zhou2016all}.
-The decomposition method used is the Simple-Lattice Design (SLD), the scalar aggregation function used is Weighted Sum (WS), the update strategy used is the Restricted update strategy and we performed a simple linear scaling of the objectives to [0, 1].
-
+This basic algorithm is similar to the MOEA/D-DE~\cite{zhang2009performance} with exception of lines 4 and 7. Line 4 deals with the selection of solutions given their priority function values, while the line 7 deals with the calculation of the priority function values. All other procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. We highlight that the neighborhood is only calculated in the initialization period.
 
 %\subsection{Priority Functions}
 
-We understand that priority functions provides an important property. It provides ways of designing MOEA/D variants that could focus on a desired characteristics, such as diversity, performance contribution, convergence to a specific region of the PF or others. This is possible because different methods can be used as priority functions to create the vector $u$ in algorithm~\ref{alg1}. 
+It it is  in our understand that priority functions provides an important property. They allow ways of designing MOEA/D variants that might focus on desired characteristics, such as diversity, performance contribution, convergence to a specific region of the PF or others. This is possible because different methods can be used as priority functions to create the vector $u$ in algorithm~\ref{alg1}. 
 
-In this work we chose to focus on studying four different characteristics: diversity on the objective space, diversity in the decision space, no information (random values) and the relative improvement, from MOEA/D-DRA as our priority functions. Next we give a brief explanation of why we chose to consider these  our methods and we describe the details of how to calculate them.
+In this work we chose to study diversity on the objective space, diversity in the decision space, and the relative improvement, from MOEA/D-DRA as our priority functions. Next we give a brief explanation of why we chose to consider these methods as well as a random (control) method and we describe how to calculate them in details.
 
 Independently of the method used to calculate the priority function, we initialize the value of the vector $u=1$, as in MOEA/D-DRA. As in DRA and GRA we have a learning period, $\Delta T$ generations (\textit{old function value}). Here $\Delta T=20$ for artificial benchmarks, as in MOEA/D-GRA~\cite{zhou2016all}, while for the real-world problems, we chose $\Delta T=2$, by trial and error. A sensitivity analyzes should be performed for deciding suitable initial values for $u$ and for $\Delta T$.
 
@@ -58,7 +54,7 @@ Independently of the method used to calculate the priority function, we initiali
 The priority function proposed that considers diversity on the objective space is based on the 2-Norm,
 
 \begin{equation}
- \text{2 Norm}_i = ||\text{current solution} - \text{parent solution}||.
+ \text{2 Norm}_i = ||\text{current solution}_i - \text{parent solution}_i||.
 \end{equation}
 
 The idea of the 2-Norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Hence more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
@@ -123,14 +119,15 @@ p\prime = p - p_r,\\
 c\prime = c - c_s,\\
 \end{split}
 \end{equation}
-%verify this
 
 with $p_r$ and $c_s$ being the parent, and offspring objective vectors used to calculate the convergence direction in equation~\ref{1}. Index $s$ is equal to index $j$ used to calculate $conv_{y}$. The same principle is valid for index $r$. The vector projection between two vectors is defined as next.
 
-\begin{multline}
+\begin{align}
+\begin{split}
 proj_{d.conv_{y}}p \prime = \frac {{d.conv_{y}} \cdot {p \prime}} {(p \times p)^2}{{p \prime}},\\
 proj_{d.conv_{y}}c \prime = \frac {{d.conv_{y}} \cdot {c \prime}} {(c \times c)^2}{{c \prime}}.
-\end{multline}
+\end{split}
+\end{align}
 
 While the norm of $p \prime - proj_{d.conv_{y}}p \prime$ is calculated as follows using the 2-Norm of this difference. The same procedure is done for $c \prime - proj_{d.conv_{y}}c \prime$.
 
