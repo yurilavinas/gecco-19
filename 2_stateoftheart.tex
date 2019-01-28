@@ -1,4 +1,4 @@
-\section{Related Works}
+\section{Background}
 
 \subsection{Priority functions}
 
@@ -32,13 +32,18 @@ That said and based on recent the success of addressing the problem of resource 
 
 Over the last two decades, some works in diversity metrics have been successfully applied in different tasks on evolutionary computation. One way to measure diversity is to use metrics that evaluate MOPs solvers. The hypervolume indicator (HV)~\cite{zitzler1998multiobjective} and the Inverted Generational Distance (IGD)~\cite{zhang2008rm} are frequently used as metrics to evaluate such solvers. However they include information about both quality of the solutions and diversity in a single metric.
 
-Among the metrics that only measure diversity, there are mainly two groups. The offline group, that calculate the diversity after the execution of the algorithm, while online group, that calculate the diversity during the execution of the algorithm. We are interested in measuring diversity during the execution of the algorithm, therefore we  briefly introduce some studies that are part of the online group.
+Among the metrics that only measure diversity, we highlight the ones that calculate the diversity during the execution of the algorithm. We have sigma method~\cite{mostaghim2003strategies}  (PF lies in the positive objective space); entropy of the solutions by using Parzen window density estimation-\cite{tan2008evolutionary} (sensitive to kernel width); and maximum relative diversity loss, MRDL, ~\cite{gee2015online} (expensive $O(N^2)$, $N$ being the size of the parent population).
+
+
+%Among the metrics that only measure diversity, there are mainly two groups. The offline group, that calculate the diversity after the execution of the algorithm, while online group, that calculate the diversity during the execution of the algorithm. We are interested in measuring diversity during the execution of the algorithm, therefore we  briefly introduce some studies that are part of the online group.
 %
 % The offline group is composed of: Chi-square-like deviation~\cite{deb1989genetic}; Spacing method~\cite{scott1995fault}; Uniformly distribution index~\cite{tan2002evolutionary}; Entropy approach~\cite{farhang2002diversity}; Grid diversity metric~\cite{deb2002running}; sparsity measure~\cite{deb2003fast}. These published studies need knowledge of the PF or the ideal vector. While the online group is composed of: sigma method~\cite{mostaghim2003strategies}  (PF lies in the positive objective space); entropy of the solutions by using Parzen window density estimation-\cite{tan2008evolutionary} (sensitive to kernel width); maximum relative diversity loss~\cite{gee2015online} (expensive $O(N^2)$, with $N$ being the size of the parent population).
 
-The online group includes: sigma method~\cite{mostaghim2003strategies}  (PF lies in the positive objective space); entropy of the solutions by using Parzen window density estimation-\cite{tan2008evolutionary} (sensitive to kernel width); and maximum relative diversity loss, MRDL, ~\cite{gee2015online} (expensive $O(N^2)$, with $N$ being the size of the parent population).
 
-In this work, we consider the maximum relative diversity loss as the first priority function since it targets diversity on the objective space. To deal with diversity on the decision space we consider the similarity of decision vectors of consecutive iteractions given by the 2-Norm. The 2-Norm is defined similarly as the R.I., since in both a difference between vectors values from distinct iteractions. However there are two important differences between R.I. and 2-Norm priority function. The first is that while the R.I. considers the function values of solutions the 2-Norm considers its decision values. The second difference is that in R.I. the next step is scalarizing the values between 0 and 1 and in the 2-Norm priority function, the 2-Norm value of that difference is computed prior to scalarizing. 
+MRDL is an online diversity metric that estimates the diversity loss of a solution to the whole population~\cite{gee2015online}. High values indicate the existence of similar solutions or that the offspring solution is close to the convergence direction. The further an objective vector of a solution is from the convergence direction, the more it contributes for the diversity of the approximated the Pareto front. The MRDL is the maximum value for Relative Diversity Loss (RDL) of each solution.
+
+
+In this work, we consider the MRDL as the first priority function since it targets diversity on the objective space. To deal with diversity on the decision space we consider the similarity of decision vectors of consecutive iteractions given by the 2-Norm. The 2-Norm is defined similarly as the R.I., since in both a difference between vectors values from distinct iteractions. However there are two main differences between R.I. and 2-Norm priority function. The first is that while the R.I. considers the function values of solutions the 2-Norm considers its decision values. The second difference is that in R.I. the next step is scalarizing the values between 0 and 1 and in the 2-Norm priority function, the 2-Norm value of that difference is computed prior to scalarizing. 
 
 
 

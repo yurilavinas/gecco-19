@@ -43,7 +43,7 @@ Independently of the method used to calculate the priority function, we initiali
 \subsection{Priority Function - Norm of the difference of current solutions and its parents} 
 
 \begin{algorithm}[t]
-	\caption{2-norm}\label{alg3}
+	\caption{2-Norm}\label{alg3}
 	\begin{algorithmic}[1]
 		
 		\State Input: NEW new incumbent solutions; OLD, previous iteraction incumbent solutions; N, the population size.
@@ -55,10 +55,10 @@ Independently of the method used to calculate the priority function, we initiali
 	\end{algorithmic}
 \end{algorithm}
 
-The priority function proposed that considers diversity on the objective space is based on the 2-norm,
+The priority function proposed that considers diversity on the objective space is based on the 2-Norm,
 
 \begin{equation}
- \text{2 norm}_i = ||\text{current solution} - \text{parent solution}||.
+ \text{2 Norm}_i = ||\text{current solution} - \text{parent solution}||.
 \end{equation}
 
 The idea of the 2-Norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Hence more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
@@ -78,9 +78,9 @@ The idea of the 2-Norm as priority function is that by using diversity on decisi
 		\For {j=1 to N}
 		\State $p = P_j - P_h$
 		\State $c = c_j - c_i$
-		\State $proj_{d.conv_{y}}*p \prime = \dfrac{sum(conv_{y}*p \prime)}{crossprod(p \prime)}*p \prime$
+		\State $proj_{d.conv_{y}}*p \prime = \dfrac{sum(conv_{y} \cdot p \prime)}{(p \prime \times p \prime)}*p \prime$
 		
-		\State $ proj_{d.conv_{y}}*c \prime = \dfrac{sum(conv_{y}*c \prime)}{crossprod(c \prime)}*c \prime$
+		\State $ proj_{d.conv_{y}}*c \prime = \dfrac{sum(conv_{y} \cdot c \prime)}{(c \prime \times c \prime)}*c \prime$
 		
 		\State $RDL = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}            $
 		\EndFor
@@ -91,10 +91,9 @@ The idea of the 2-Norm as priority function is that by using diversity on decisi
 	\end{algorithmic}
 \end{algorithm}
 
-The priority function proposed that considers diversity on the objective space is based on the Maximum Relative Diversity Loss, MRDL. The idea of the MRDL as a priority function is that by measuring diversity on the objective space, more resources are given to incumbent solutions that have similar objective function values between two consecutive iteractions leading to a higher exploration of the objective space.Algorithm~\ref{alg2} gives the details on implementation.
- 
- MRDL is an online diversity metric that estimates the diversity loss of a solution to the whole population~\cite{gee2015online}. It is an useful metric since high values of this metric indicates the existence of similar offspring solution in the convergence archive or the offspring solution is close to the line of estimated convergence direction. It uses the space movement (convergence directions) of a solution on the objective space towards the PF. The further an objective vector of a solution is from the convergence direction, the more it contributes for the diversity of the approximated PF. 
 
+The diversity on objective space as a priority function  is based on the Maximum Relative Diversity Loss, MRDL~\cite{gee2015online}.  The idea using MRDL as a priority function is that by measuring diversity on the objective space, more resources are given to incumbent solutions that have similar objective function values between two consecutive iteractions leading to a higher exploration of the objective space. Algorithm~\ref{alg2} gives the details on implementation.
+ 
 Now, we move on how to calculate MRDL. Prior to scalarizing it between $0$ and $1$ to fit the algorithm~\ref{alg1} we calculate MRDL for every individual of the population. The following equation describes how to calculate the priority function given the MRDL, $\Gamma^{p \rightarrow c}$.
 
 
@@ -105,14 +104,14 @@ Now, we move on how to calculate MRDL. Prior to scalarizing it between $0$ and $
 
 
 
-At every iteraction and each incumbent solution, we need to estimate $k$ convergence directions (shown later)  and then we compute the Relative Diversity Loss (RDL) for each of these $k$ convergence directions. The maximum value among  these $k$ convergence directions is chosen as the MRDL for that incumbent solution.
-
- RDL is a diversity measurement  that indicates the amount of diversity loss of an individual solution between two consecutive generations. High values of RDL imply a reduction of the solution spread.  To calculate RDL of a solution to the whole population, the following equation is used. It considers every incumbent solution related to a subproblem $i$, from the whole population. This reduction is given by a division between the shortest distance of a parent, $p$,  and offspring, $c$, to the line of convergence direction
+At every iteraction and for each incumbent solution, we need $k$ convergence directions (shown later) and we compute the Relative Diversity Loss (RDL) for each of these $k$ convergence directions. The maximum value among these $k$ convergence directions is chosen as the MRDL for that incumbent solution.
 
 \begin{equation}
 \label{rdl}
 \Gamma_{d.conv_{y}}^{p \rightarrow c} = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}.
 \end{equation}
+
+To calculate RDL of a solution to the whole population, the following equation is used. It considers every incumbent solution related to a subproblem $i$, from the whole population. This reduction is given by a division between the shortest distance of a parent, $p$,  and offspring, $c$, to the line of convergence direction
 
 %The numerator in~\ref{rdl} is the closest distance between the parent solution ($p$) to the convergence direction $(c_r - p_r)$. While, the denominator in~\ref{rdl} is the closest distance between the offspring solution ($c$) to the convergence direction $(c_r - p_r)$. %The projections of $p\prime$ and $c\prime$ objective vectors onto the convergence direction $d.conv_{y}$ are $proj_{d.conv_{y}}p \prime$ and $proj_{d.conv_{y}}c \prime$.
 
@@ -128,16 +127,12 @@ c\prime = c - c_s,\\
 
 with $p_r$ and $c_s$ being the parent, and offspring objective vectors used to calculate the convergence direction in equation~\ref{1}. Index $s$ is equal to index $j$ used to calculate $conv_{y}$. The same principle is valid for index $r$. The vector projection between two vectors is defined as next.
 
-\begin{equation}
-proj_{d.conv_{y}}p \prime = \frac {{d.conv_{y}} \cdot {p \prime}} {|{p \prime}|^2}{{p \prime}}.
-\end{equation}
+\begin{multline}
+proj_{d.conv_{y}}p \prime = \frac {{d.conv_{y}} \cdot {p \prime}} {(p \times p)^2}{{p \prime}},\\
+proj_{d.conv_{y}}c \prime = \frac {{d.conv_{y}} \cdot {c \prime}} {(c \times c)^2}{{c \prime}}.
+\end{multline}
 
-While the norm of $p \prime - proj_{d.conv_{y}}p \prime$ is calculated as follows.
-
-\begin{equation}
-||p \prime - proj_{d.conv_{y}}p \prime|| = \text{2-norm}(p \prime - proj_{d.conv_{y}}p \prime)
-\end{equation}
-
+While the norm of $p \prime - proj_{d.conv_{y}}p \prime$ is calculated as follows using the 2-Norm of this difference. The same procedure is done for $c \prime - proj_{d.conv_{y}}c \prime$.
 
 To estimate the convergence direction, $d.conv_{y}$, we need to have an offspring, $c_j$, that dominates at least one parent. Select a parent, $p_h$, solution that is closest to this offspring in the objective space.  For every weakly dominated parent, one convergence direction is calculated as in the next equation. As in the study by Zitzler et al.~\cite{zitzler2003performance} study, weak dominance ($A \succeq B$) means that any solution in set B is weakly dominated by a solution in set A. However, this does not rule out equality, because $A \succeq A$ for all approximation sets $A$.
 \begin{equation}
