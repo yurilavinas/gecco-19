@@ -42,22 +42,28 @@ Independently of the method used to calculate the priority function, we initiali
 	\caption{2-Norm}\label{alg3}
 	\begin{algorithmic}[1]
 		
-		\State Input: NEW new incumbent solutions; OLD, previous iteraction incumbent solutions; N, the population size.
+		\State Input: $X^{t}$ decision vectors of solutions; $X^{t-1}$, decision vectors from the previous solutions; N, the population size.
 		\For {i=1 to N} 
-			\State u[i] = $||$New[i] - OLD[i]$||$
+			\State u[i] = $||X^{t}_i$ - $X^{t}_i||$
 		\EndFor
 		\State u = scale (u) // between 0 and 1\\
 	\Return u
 	\end{algorithmic}
 \end{algorithm}
 
-The priority function proposed that considers diversity on the objective space is based on the 2-Norm,
+The priority function proposed that considers diversity on the objective space is based on the (2-)Norm of the difference of the current solution to its parent.
 
 \begin{equation}
- \text{2 Norm}_i = ||\text{current solution}_i - \text{parent solution}_i||.
+ \text{Norm}_i = ||\text{current solution}_i - \text{parent solution}_i||.
 \end{equation}
 
-The idea of the 2-Norm as priority function is that by using diversity on decision space as the priority function more resources are given to incumbent solutions that are similar. Hence more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
+Then, we scale the values to be between 0 and 1, by using the next equation.
+
+\begin{equation}\label{scaling}
+ \text{Norm}_i = (\text{Norm}_i - \text{min  Norm}) / (\text{max Norm} - \text{min Norm})
+\end{equation}
+
+The idea of using the Norm as priority function is that by considering diversity as the priority function more resources are given to incumbent solutions that are similar. Hence more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
 
 
 \subsection{Priority Function - MRDL} 
@@ -67,20 +73,21 @@ The idea of the 2-Norm as priority function is that by using diversity on decisi
 	\caption{MRDL}\label{alg2}
 	\begin{algorithmic}[1]
 		
-		\State Input: old MRDL (initial value is 0); C, objective function values from the incumbent solutions; P, objective function values from the previous iteraction incumbent solutions; N, the population size.
-		\For {i=1 to $|C|$}
+		\State Input: old MRDL (initial value is 0); $Y^t$, objective function values from the incumbent solutions; $Y^{t-1}$, objective function values from the incumbent solutions of the previous iteraction; N, the population size.
+		\For {i=1 to N}
 		\State find $h \in |P|$ where  ($P_h \succeq C_i$) and $||P_h - C_i  ||$ is minimal.
-		\State $d.conv_{y} = C_i - P_h$.
+		\State If none is found, MRDL = $-\infty$ and move to the next $i$.
+		\State $d.conv = C_i - P_h$.
 		\For {j=1 to N}
-		\State $p = P_j - P_h$
-		\State $c = c_j - c_i$
-		\State $proj_{d.conv_{y}}*p \prime = \dfrac{sum(conv_{y} \cdot p \prime)}{(p \prime \times p \prime)}*p \prime$
+		\State $p \prime = P_j - P_h$
+		\State $c \prime = c_j - c_i$
+		\State $proj_{d.conv}*p \prime = \dfrac{sum(conv \cdot p \prime)}{(p \prime \times p \prime)}*p \prime$
 		
-		\State $ proj_{d.conv_{y}}*c \prime = \dfrac{sum(conv_{y} \cdot c \prime)}{(c \prime \times c \prime)}*c \prime$
+		\State $ proj_{d.conv}*c \prime = \dfrac{sum(conv \cdot c \prime)}{(c \prime \times c \prime)}*c \prime$
 		
-		\State $RDL = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}            $
+		\State $RDL_j = \dfrac{ ||p \prime - proj_{d.conv}p \prime|| }{||c \prime - proj_{d.conv}c \prime||}            $
 		\EndFor
-		MDRL[i] = maximum RDL
+		MDRL[i] = maximum $RDL_j$
 		\EndFor
 		\State u = 1 - scale (MRDL - old MRDL) // between 0 and 1\\
 	\Return u, MRDL
@@ -88,75 +95,142 @@ The idea of the 2-Norm as priority function is that by using diversity on decisi
 \end{algorithm}
 
 
-The diversity on objective space as a priority function  is based on the Maximum Relative Diversity Loss, MRDL~\cite{gee2015online}.  The idea using MRDL as a priority function is that by measuring diversity on the objective space, more resources are given to incumbent solutions that have similar objective function values between two consecutive iteractions leading to a higher exploration of the objective space. Algorithm~\ref{alg2} gives the details on implementation.
+The diversity on objective space as a priority function  is based on the Maximum Relative Diversity Loss, MRDL~\cite{gee2015online}.  The idea of using MRDL is that by measuring diversity on the objective space, more resources are given to incumbent solutions that have similar objective function values between two consecutive iteractions. Therefore, it is expected that this will lead to a higher exploration of the objective space. Algorithm~\ref{alg2} gives the details on implementation.
+
  
-Now, we move on how to calculate MRDL. Prior to scalarizing it between $0$ and $1$ to fit the algorithm~\ref{alg1} we calculate MRDL for every individual of the population. The following equation describes how to calculate the priority function given the MRDL, $\Gamma^{p \rightarrow c}$.
+Before explaining the details of how to calculate the MRDL, we must introduce the definition of weak dominance. As in the study by Zitzler et al.~\cite{zitzler2003performance} study, weak dominance ($A \succeq B$) means that any solution in set B is weakly dominated by a solution in set A. However, this does not rule out equality, because $A \succeq A$ for all approximation sets $A$.
 
+Let $N$ be the number of incumbent solutions and the objective values of iteraction $t$ be $Y^t$ and the objectives values of iteraction $t-1$ be $Y^{t-1}$. For each incumbent solution $i$, find index $h \in Y^{T-1}$. This index is the index of a parent that weak dominates the solution $i$. If $h$ is not found (no parent weak dominates the solution) the MRDL value for this solution is set to $-\infty$. Given $i$ and $h$, for each subproblem, the value of Relative Diversity Loss (RDL) is given by 
 
-\vspace{-1em}
 \begin{equation}
-\Gamma_{i}^{p \rightarrow c} = \underset{i=1,...,k}{\max} \Gamma_{d.conv_{y}}^{p \rightarrow c}.
+RDL = \dfrac{ ||p \prime - proj_{d.conv}p \prime|| }{||c \prime - proj_{d.conv}c \prime||}.
 \end{equation}
 
 
 
-At every iteraction and for each incumbent solution, we need $k$ convergence directions (shown later) and we compute the Relative Diversity Loss (RDL) for each of these $k$ convergence directions. The maximum value among these $k$ convergence directions is chosen as the MRDL for that incumbent solution.
+%TODO: brief explaination of the idea of RDL
+RDL is a diversity measurement quantity that indicates the amount of diversity loss of an individual solution between two consecutive generations. High values of RDL imply a reduction of the solution spread, since the further an objective vector of a solution is from the convergence direction, the more it contributes in terms of diversity in the objective space~\cite{gee2015online}. The maximum value of RDL is the MRDL of the solution $i$.
 
-\begin{equation}
-\label{rdl}
-\Gamma_{d.conv_{y}}^{p \rightarrow c} = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}.
-\end{equation}
 
-To calculate RDL of a solution to the whole population, the following equation is used. It considers every incumbent solution related to a subproblem $i$, from the whole population. This reduction is given by a division between the shortest distance of a parent, $p$,  and offspring, $c$, to the line of convergence direction
 
-%The numerator in~\ref{rdl} is the closest distance between the parent solution ($p$) to the convergence direction $(c_r - p_r)$. While, the denominator in~\ref{rdl} is the closest distance between the offspring solution ($c$) to the convergence direction $(c_r - p_r)$. %The projections of $p\prime$ and $c\prime$ objective vectors onto the convergence direction $d.conv_{y}$ are $proj_{d.conv_{y}}p \prime$ and $proj_{d.conv_{y}}c \prime$.
 
-$p\prime$ and $c\prime $ are given by:
-\vspace{-1em}
-\begin{equation}
-\begin{split}
-p\prime = p - p_r,\\
-c\prime = c - c_s,\\
-\end{split}
-\end{equation}
-
-with $p_r$ and $c_s$ being the parent, and offspring objective vectors used to calculate the convergence direction in equation~\ref{1}. Index $s$ is equal to index $j$ used to calculate $conv_{y}$. The same principle is valid for index $r$. The vector projection between two vectors is defined as next.
-
-\begin{align}
-\begin{split}
-proj_{d.conv_{y}}p \prime = \frac {{d.conv_{y}} \cdot {p \prime}} {(p \times p)^2}{{p \prime}},\\
-proj_{d.conv_{y}}c \prime = \frac {{d.conv_{y}} \cdot {c \prime}} {(c \times c)^2}{{c \prime}}.
-\end{split}
-\end{align}
-
-While the norm of $p \prime - proj_{d.conv_{y}}p \prime$ is calculated as follows using the 2-Norm of this difference. The same procedure is done for $c \prime - proj_{d.conv_{y}}c \prime$.
-
-To estimate the convergence direction, $d.conv_{y}$, we need to have an offspring, $c_j$, that dominates at least one parent. Select a parent, $p_h$, solution that is closest to this offspring in the objective space.  For every weakly dominated parent, one convergence direction is calculated as in the next equation. As in the study by Zitzler et al.~\cite{zitzler2003performance} study, weak dominance ($A \succeq B$) means that any solution in set B is weakly dominated by a solution in set A. However, this does not rule out equality, because $A \succeq A$ for all approximation sets $A$.
-\begin{equation}
-\label{1}
-d.conv_{y} = c_j - p_h
-\end{equation}
-
-Index $j$ (for indexing offsprings, $c_j$) is selected from the set $D_c$. Index $h$ is explained later.
-
-\vspace{-1em}
-\begin{equation}
-\label{D}
-D_c = \{d| \exists c_d \prec p_k, k \in {1,..., N}, d \in [1,..., |C|]\}
-z\end{equation}
-
-$N$ is the parent population size, $|C|$ is the size of the offspring population $C$. In equation~\ref{D}, the offspring $c_d$ must weakly dominate at least one parent solution. Index $h$ (for indexing parents, $p_h$) comes from the following two equations.
-\begin{equation}
-h = \underset{k \in D_p }{argmin} || p_k - c_j ||
-\end{equation}
-
-\begin{equation}
-\label{D_p}
-D_p = \{k| \exists c_j \prec p_k, k \in {1,..., N}\}
-\end{equation}
-
-$D_p$ in equation~\ref{D_p} denotes the index set of parent solutions which are weakly dominated by $c_j$ ($j$ index comes from equation~\ref{D}).
-
+% For every $c_i$, where $c_i$ is the objective function value from incumbent solution $i=1$ to $N$, find an index $h \IN Y^{T-1}$, that holds
+%
+%\begin{align}\label{first}
+%	\begin{split}
+%		P_h \succeq C_i\text{ and}\\
+%		\text{min } ||P_h - c_i||.,
+%	\end{split}
+%\end{align}
+%
+%where $p_h$ weak dominates $c_i$ in the objective space. $p_h$ is the objective function value from a parent solution that holds the equation~\ref{first}. With the index \emph{h}, we can calculate the convergence direction for each incumbent solution as
+%
+%\begin{equation}\label{second}
+%	d.conv = c_i - p_h.
+%\end{equation}
+%
+%Then for each objective function value from incumbent solution $j$, $j=1$ to $N$, (\emph{loop (2)}), we calculate
+%
+%\begin{align}\label{third}
+%	\begin{split}
+%		p \prime = P_j - P_h\\
+%		c \prime = c_j - c_i.
+%	\end{split}
+%\end{align}
+%
+%With those values, we can calculate two \emph{projection directions} related to each objective function value $j$ as
+%
+%
+%\begin{align}\label{fourth}
+%\begin{split}
+%proj_{d.conv}*p \prime = \dfrac{sum(conv \cdot p \prime)}{(p \prime \times p \prime)}*p \prime\\
+%proj_{d.conv}*c \prime = \dfrac{sum(conv \cdot c \prime)}{(c \prime \times c \prime)}*c \prime.
+%\end{split}
+%\end{align}
+%
+%With these two directions, we might calculate the Relative Diversity Loss (RDL) for each of convergence direction (see~\ref{second}), (this finishes (\emph{loop (1)})). We calculate RDL as
+%
+%\begin{equation}
+%RDL_j = \dfrac{ ||p \prime - proj_{d.conv}p \prime|| }{||c \prime - proj_{d.conv}c \prime||}.
+%\end{equation}
+%
+%We equal $MRDL_i$ to max $RDL_j$ (this finishes (\emph{loop (1)})).
+%
+%We subtract the MRDL values from interaction $g$ from the MRDL from iteraction $g-1$). We set the initial value of MRDL as zero (at the first time that MRDL is calculated there is no real subtraction).
+%
+%\begin{equation}
+% MRDL_{final} = MRDL_g - MRDL_{g-1}.
+%\end{equation}
+%
+% Finally, we scale $MRDL_{final}$ using the same principle used in the 2-Norm, see equation~\ref{scaling}. 
+%\end{align} 
+%Now, we move on how to calculate MRDL. Prior to scalarizing it between $0$ and $1$ to fit the algorithm~\ref{alg1} we calculate MRDL for every individual of the population. The following equation describes how to calculate the priority function given the MRDL, $\Gamma^{p \rightarrow c}$.
+%
+%
+%\vspace{-1em}
+%\begin{equation}
+%\Gamma_{i}^{p \rightarrow c} = \underset{i=1,...,k}{\max} \Gamma_{d.conv_{y}}^{p \rightarrow c}.
+%\end{equation}
+%
+%
+%
+%At every iteraction and for each incumbent solution, we need $k$ convergence directions (shown later) and we compute the Relative Diversity Loss (RDL) for each of these $k$ convergence directions. The maximum value among these $k$ convergence directions is chosen as the MRDL for that incumbent solution.
+%
+%\begin{equation}
+%\label{rdl}
+%\Gamma_{d.conv_{y}}^{p \rightarrow c} = \dfrac{ ||p \prime - proj_{d.conv_{y}}p \prime|| }{||c \prime - proj_{d.conv_{y}}c \prime||}.
+%\end{equation}
+%
+%To calculate RDL of a solution to the whole population, the following equation is used. It considers every incumbent solution related to a subproblem $i$, from the whole population. This reduction is given by a division between the shortest distance of a parent, $p$,  and offspring, $c$, to the line of convergence direction
+%
+%%The numerator in~\ref{rdl} is the closest distance between the parent solution ($p$) to the convergence direction $(c_r - p_r)$. While, the denominator in~\ref{rdl} is the closest distance between the offspring solution ($c$) to the convergence direction $(c_r - p_r)$. %The projections of $p\prime$ and $c\prime$ objective vectors onto the convergence direction $d.conv_{y}$ are $proj_{d.conv_{y}}p \prime$ and $proj_{d.conv_{y}}c \prime$.
+%
+%$p\prime$ and $c\prime $ are given by:
+%\vspace{-1em}
+%\begin{equation}
+%\begin{split}
+%p\prime = p - p_r,\\
+%c\prime = c - c_s,\\
+%\end{split}
+%\end{equation}
+%
+%with $p_r$ and $c_s$ being the parent, and offspring objective vectors used to calculate the convergence direction in equation~\ref{1}. Index $s$ is equal to index $j$ used to calculate $conv_{y}$. The same principle is valid for index $r$. The vector projection between two vectors is defined as next.
+%
+%\begin{align}
+%\begin{split}
+%proj_{d.conv_{y}}p \prime = \frac {{d.conv_{y}} \cdot {p \prime}} {(p \times p)^2}{{p \prime}},\\
+%proj_{d.conv_{y}}c \prime = \frac {{d.conv_{y}} \cdot {c \prime}} {(c \times c)^2}{{c \prime}}.
+%\end{split}
+%\end{align}
+%
+%While the norm of $p \prime - proj_{d.conv_{y}}p \prime$ is calculated as follows using the 2-Norm of this difference. The same procedure is done for $c \prime - proj_{d.conv_{y}}c \prime$.
+%
+%To estimate the convergence direction, $d.conv_{y}$, we need to have an offspring, $c_j$, that dominates at least one parent. Select a parent, $p_h$, solution that is closest to this offspring in the objective space.  For every weakly dominated parent, one convergence direction is calculated as in the next equation. As in the study by Zitzler et al.~\cite{zitzler2003performance} study, weak dominance ($A \succeq B$) means that any solution in set B is weakly dominated by a solution in set A. However, this does not rule out equality, because $A \succeq A$ for all approximation sets $A$.
+%\begin{equation}
+%\label{1}
+%d.conv_{y} = c_j - p_h
+%\end{equation}
+%
+%Index $j$ (for indexing offsprings, $c_j$) is selected from the set $D_c$. Index $h$ is explained later.
+%
+%\vspace{-1em}
+%\begin{equation}
+%\label{D}
+%D_c = \{d| \exists c_d \prec p_k, k \in {1,..., N}, d \in [1,..., |C|]\}
+%z\end{equation}
+%
+%$N$ is the parent population size, $|C|$ is the size of the offspring population $C$. In equation~\ref{D}, the offspring $c_d$ must weakly dominate at least one parent solution. Index $h$ (for indexing parents, $p_h$) comes from the following two equations.
+%\begin{equation}
+%h = \underset{k \in D_p }{argmin} || p_k - c_j ||
+%\end{equation}
+%
+%\begin{equation}
+%\label{D_p}
+%D_p = \{k| \exists c_j \prec p_k, k \in {1,..., N}\}
+%\end{equation}
+%
+%$D_p$ in equation~\ref{D_p} denotes the index set of parent solutions which are weakly dominated by $c_j$ ($j$ index comes from equation~\ref{D}).
+%
 
 
 \subsection{Priority Function - Relative Improvement}  
@@ -165,7 +239,7 @@ $D_p$ in equation~\ref{D_p} denotes the index set of parent solutions which are 
 	\caption{Relative Improvement}\label{alg5}
 	\begin{algorithmic}[1]
 		
-		\State Input:  C, objective function values from the incumbent solutions; P, objective function values from the $\Delta T$ previous iteraction incumbent solutions; N, the population size.
+		\State Input:   $Y^t$, objective function values from the incumbent solutions; $Y^{t-1}$, objective function values from the $\Delta T$ previous solutions;
 		\For {i=1 to N}
 		\State u[i] = (C[i] - P[i])/C[i]
 		\EndFor
@@ -174,7 +248,9 @@ $D_p$ in equation~\ref{D_p} denotes the index set of parent solutions which are 
 	\end{algorithmic}
 \end{algorithm}
 
-Here we give a brief description of the Relative Improvement (R.I.), the priority function used in MOEA/D-DRA, MOEA/D-GRA and many others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}. R.I. was first introduced in the context of the unconstrained MOEA competition in the CEC 2009~\cite{zhang2009performance}, being the winner of that competition~\cite{zhang2008multiobjective}. This competition also introduced the UF benchmark functions.
+Here we give a brief description of the Relative Improvement (R.I.), the priority function used in MOEA/D-DRA, MOEA/D-GRA and others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}. 
+
+We highlight that R.I. was first introduced in the context of the unconstrained MOEA competition in the CEC 2009~\cite{zhang2009performance}, being the winner of that competition~\cite{zhang2008multiobjective}. Also, in this competition the UF benchmark functions were introduced.
 
 \subsection{Priority Function - Random}
 
@@ -190,7 +266,7 @@ Here we give a brief description of the Relative Improvement (R.I.), the priorit
 	\end{algorithmic}
 \end{algorithm}
 
-Finally, we describe the last priority function studied in this work. The random priority function is used a base for comparison. Given no information besides the size of the population, we define the vector of priority $u$ at random. Algorithm~\ref{alg4} gives the details on implementation. 
+The random priority function is used a base for comparison. Given no information besides the size of the population, we define the vector of priority $u$ at random. Algorithm~\ref{alg4} gives the details on implementation. 
 %
 %
 %

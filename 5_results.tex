@@ -5,17 +5,17 @@
 	%	\Large{Average performance on different tournament size - Gallagher's Gaussian 21-hi Peaks Function}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-	\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/UF9_HV.png}
+	\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/UF9_HV.png}
 %	\caption{HV - UF3}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-	\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/DTLZ4_HV.png}
+	\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/DTLZ4_HV.png}
 %	\caption{HV - UF8}
 	\end{subfigure}
 \begin{subfigure}[b]{0.33\textwidth}
 	\centering
-	\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/moon_HV.png}
+	\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/moon_HV.png}
 %	\caption{HV - DTLZ4}
 \end{subfigure}
 	\caption{Box plot of HV values on UF9, DTLZ4 and Lunar Landing.None is the MOEA/D-DE with no priority function.}
@@ -57,7 +57,7 @@
 	\end{subfigure}
 %\begin{subfigure}[b]{0.33\textwidth}
 %	\centering
-%	\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/moon_HV}
+%	\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/moon_HV}
 %%	\caption{IGD - DTLZ4}
 %\end{subfigure}
 	\caption{Box plot of IGD values on UF9 and DTLZ4. None is the MOEA/D-DE with no priority function.}
@@ -87,38 +87,50 @@
 %			\label{evolution_igd}
 %	\end{figure*}
 
+\begin{figure}[!t]
+	
+	%	\Large{Average performance on different tournament size - Gallagher's Gaussian 21-hi Peaks Function}
+	%	\begin{subfigure}[b]{0.33\textwidth}
+	\centering
+	\includegraphics[width=0.45\textwidth, height=0.33\textwidth]{images/Pareto-front-dtlz4.png}
+	%		\caption{RA- UF8}
+	%	\end{subfigure}
+	\caption{Pareto Front approximations of all priority functions and MOEA/D-DE (None).}
+	\label{PFs}
+	
+\end{figure}
 
 \begin{figure*}[!t]
 	
 	%	\Large{Average performance on different tournament size - Gallagher's Gaussian 21-hi Peaks Function}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/Ra-norm-uf9.png}
+		\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/Ra-norm-uf9.png}
 %		\caption{RA- UF8}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/Ra-gra-uf9.png}
+		\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/Ra-gra-uf9.png}
 %		\caption{RA- UF8}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/Ra-mrdl-uf9.png}
+		\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/Ra-mrdl-uf9.png}
 %		\caption{RA- UF8}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/Ra-norm-dtlz4.png}
+		\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/Ra-norm-dtlz4.png}
 %		\caption{RA- UF8}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/Ra-gra-dtlz4.png}
+		\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/Ra-gra-dtlz4.png}
 %		\caption{RA- UF8}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.33\textwidth}
 		\centering
-		\includegraphics[width=1\textwidth, height=0.77\textwidth]{images/Ra-mrdl-dtlz4.png}
+		\includegraphics[width=1\textwidth, height=0.8\textwidth]{images/Ra-mrdl-dtlz4.png}
 %		\caption{RA- UF8}
 	\end{subfigure}
 	\caption{Resource allocation by subproblem - The red line indicates the default amount of resource for each problem, i.e., with no priority function.}
@@ -126,18 +138,7 @@
 	
 \end{figure*}
 
-\begin{figure}[!t]
-	
-	%	\Large{Average performance on different tournament size - Gallagher's Gaussian 21-hi Peaks Function}
-%	\begin{subfigure}[b]{0.33\textwidth}
-		\centering
-		\includegraphics[width=0.45\textwidth, height=0.33\textwidth]{images/Pareto-front-dtlz4.png}
-		%		\caption{RA- UF8}
-%	\end{subfigure}
-	\caption{Pareto Front approximations of all priority functions and MOEA/D-DE (None).}
-	\label{PFs}
-	
-\end{figure}
+
 
 %
 %\begin{figure*}[!t]
@@ -164,8 +165,8 @@
 		\hline
 		\rowcolor[gray]{.7} \multicolumn{1}{|l|}{Function -- Priority Function}         & \multicolumn{1}{l|}{None} & \multicolumn{1}{l|}{MRDL} & \multicolumn{1}{l|}{Norm} & \multicolumn{1}{l|}{R.I.} & \multicolumn{1}{l|}{Random} \\ \hline \hline  \hline
 		\multicolumn{1}{|l|}{Lunar}           & \multicolumn{1}{l}{0.656 (0.034)} & \multicolumn{1}{l}{\textbf{0.687 (0.057)$*$}} & \multicolumn{1}{l}{0.666 (0.060)} & 0.683 (0.067)             &\multicolumn{1}{l|} {0.664 (0.047)} \\ \hline \hline \hline
-		\rowcolor[gray]{.95} \multicolumn{1}{|l|}{UF1}              & \multicolumn{1}{l}{0.861 (0.011)} & \multicolumn{1}{l}{0.863 (0.015)} & \multicolumn{1}{l}{0.833 (0.022)} & \textbf{0.877 (0.013)$*$}             &\multicolumn{1}{l|} {0.874 (0.015)$*$} \\ \hline \hline
-		\multicolumn{1}{|l|}{UF2}              & \multicolumn{1}{l}{0.750 (0.009)} & \multicolumn{1}{l}{0.750 (0.005)} & \multicolumn{1}{l}{ 0.762 (0.010)$*$} & 0.772 (0.008)$*$             &\multicolumn{1}{l|} {\textbf{0.773 (0.008)$*$}} \\ \hline \hline
+		\rowcolor[gray]{.95} \multicolumn{1}{|l|}{UF1}              & \multicolumn{1}{l}{0.861 (0.011)} & \multicolumn{1}{l}{0.863 (0.015)} & \multicolumn{1}{l}{0.833 (0.022)} & \textbf{0.88 (0.013)$*$}             &\multicolumn{1}{l|} {0.874 (0.015)$*$} \\ \hline \hline
+		\multicolumn{1}{|l|}{UF2}              & \multicolumn{1}{l}{0.750 (0.009)} & \multicolumn{1}{l}{0.750 (0.005)} & \multicolumn{1}{l}{ 0.762 (0.010)$*$} & 0.82 (0.008)$*$             &\multicolumn{1}{l|} {\textbf{0.83 (0.008)$*$}} \\ \hline \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{UF3}              & \multicolumn{1}{l}{0.844 (0.044)} & \multicolumn{1}{l}{0.860 (0.043)} & \multicolumn{1}{l}{ \textbf{0.944 (0.018)}$*$} & 0.918 (0.029)$*$             &\multicolumn{1}{l|}  {0.909 (0.037)$*$} \\ \hline \hline
 		\multicolumn{1}{|l|}{UF4}              & \multicolumn{1}{l}{0.364 (0.005)} & \multicolumn{1}{l}{0.366 (0.003)} & \multicolumn{1}{l}{ 0.372 (0.003)}$*$ & 0.371 (0.004)$*$             &\multicolumn{1}{l|} {\textbf{0.373 (0.004)$*$}} \\ \hline \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{UF5}              & \multicolumn{1}{l}{0.629 (0.022)} & \multicolumn{1}{l}{0.663 (0.024)$*$} & \multicolumn{1}{l}{ 0.754 (0.034)$*$} & \textbf{0.811 (0.015)$*$}             &\multicolumn{1}{l|} {0.810 (0.016)$*$} \\ \hline \hline
@@ -173,7 +174,7 @@
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{UF7}              & \multicolumn{1}{l}{0.803 (0.010)} & \multicolumn{1}{l}{0.801 (0.010)} & \multicolumn{1}{l}{ 0.818 (0.012)$*$} & \textbf{0.837 (0.005)$*$}             &\multicolumn{1}{l|} {0.834 (0.006)$*$} \\ \hline \hline
 		\multicolumn{1}{|l|}{UF8}              & \multicolumn{1}{l}{0.894 (0.004)} & \multicolumn{1}{l}{0.900 (0.004)$*$} & \multicolumn{1}{l}{ 0.914 (0.005)$*$} & \textbf{0.922 (0.003)$*$}             &\multicolumn{1}{l|} {0.916 (0.004)$*$} \\ \hline \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{UF9}              & \multicolumn{1}{l}{0.931 (0.004)} & \multicolumn{1}{l}{0.932 (0.004)} & \multicolumn{1}{l}{ \textbf{0.944 (0.014)$*$}} & 0.932 (0.004)             &\multicolumn{1}{l|} {0.940 (0.008)$*$} \\ \hline \hline
-		\multicolumn{1}{|l|}{UF10}              & \multicolumn{1}{l}{0776 (0.017)} & \multicolumn{1}{l}{0.786 (0.017)} & \multicolumn{1}{l}{ 0.835 (0.035)$*$} & \textbf{0.861 (0.033)$*$}             &\multicolumn{1}{l|} {0.839 (0.026)$*$} \\ \hline  \hline \hline
+		\multicolumn{1}{|l|}{UF10}              & \multicolumn{1}{l}{086 (0.017)} & \multicolumn{1}{l}{0.786 (0.017)} & \multicolumn{1}{l}{ 0.835 (0.035)$*$} & \textbf{0.861 (0.033)$*$}             &\multicolumn{1}{l|} {0.839 (0.026)$*$} \\ \hline  \hline \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{DTLZ1}              & \multicolumn{1}{l}{0.989 (0.003)} & \multicolumn{1}{l}{0.991 (0.004)$*$} & \multicolumn{1}{l}{ 0.997 (0.002)$*$} & 0.998 (0.002)$*$             & \multicolumn{1}{l|} {\textbf{0.998 (0.001)$*$}} \\ \hline \hline
 		\multicolumn{1}{|l|}{DTLZ2}              & \multicolumn{1}{l}{0.910 (0.002)} & \multicolumn{1}{l}{0.912 (0.002)$*$} & \multicolumn{1}{l}{ \textbf{0.922 (0.001)$*$}} & 0.921 (0.001)$*$             & \multicolumn{1}{l|} {\textbf{0.922 (0.001)$*$}} \\ \hline  \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{DTLZ3}              & \multicolumn{1}{l}{0.960 (0.015)} & \multicolumn{1}{l}{0.969 (0.016)$*$} & \multicolumn{1}{l}{ 0.992 (0.009)$*$} &0.991 (0.009)$*$             & \multicolumn{1}{l|} {\textbf{0.993 (0.006)$*$}} \\ \hline \hline
@@ -182,7 +183,7 @@
 		\multicolumn{1}{|l|}{DTLZ6}              & \multicolumn{1}{l}{0.837 (0.035)} & \multicolumn{1}{l}{0.860 (0.021)$*$} & \multicolumn{1}{l}{ \textbf{0.999 ($>$0.000)$*$}} & 0.999 (0.001)$*$             & \multicolumn{1}{l|} {0.999 (0.001)$*$} \\ \hline  \hline 
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{DTLZ7}              & \multicolumn{1}{l}{0.325 (0.056)} & \multicolumn{1}{l}{0.339 (0.048)$*$} & \multicolumn{1}{l}{ \textbf{0.688 (0.005)$*$}} &0.688 (0.006)$*$             & \multicolumn{1}{l|} {0.660 (0.011)$*$} \\ \hline 
 	\end{tabular}
-	\caption{HV median and standard deviation, in parenthesis. The best values found by a priority function is in bold while the priority function with a Star $*$ is statistically different from None (the MOEA/D-DE with no priority function.)}
+	\caption{HV median and standard deviation, in parenthesis. The best values found by a priority function is in bold while the priority function with a Star $*$ is statistically different from None (the MOEA/D-DE with no priority function).}
 	\label{table_hv}
 \end{table*}
 
@@ -201,17 +202,17 @@
 		\multicolumn{1}{|l|}{UF7}              & \multicolumn{1}{l}{0.125 (0.018)} & \multicolumn{1}{l}{0.127 (0.015)} & \multicolumn{1}{l}{ \textbf{0.061 (0.006)$*$}} & 0.068 (0.005)$*$             & \multicolumn{1}{l|} {0.074 (0.005)$*$} \\ \hline \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{UF8}              & \multicolumn{1}{l}{0.286 (0.012)} & \multicolumn{1}{l}{0.279 (0.010)$*$} & \multicolumn{1}{l}{ \textbf{0.229 (0.014)$*$}} & 0.257 (0.020)$*$             & \multicolumn{1}{l|} {0.232 (0.006)$*$} \\ \hline \hline
 		\multicolumn{1}{|l|}{UF9}              & \multicolumn{1}{l}{0.451 (0.012)} & \multicolumn{1}{l}{0.439 (0.015)$*$} & \multicolumn{1}{l}{ \textbf{0.385 (0.020)$*$}} & 0.420 (0.017)$*$             & \multicolumn{1}{l|} {0.400 (0.018)$*$} \\ \hline \hline
-		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{UF10}              & \multicolumn{1}{l}{3.693 (0.20)} & \multicolumn{1}{l}{3.456 (0.229)$*$} & \multicolumn{1}{l}{ 2.377 (0.241)$*$} & \textbf{2.364 (0.272)$*$}             & \multicolumn{1}{l|} {2.639 (0.253)$*$} \\ \hline  \hline  \hline
+		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{UF10}              & \multicolumn{1}{l}{3.693 (0.20)} & \multicolumn{1}{l}{3.456 (0.229)$*$} & \multicolumn{1}{l}{ 2.38 (0.241)$*$} & \textbf{2.364 (0.272)$*$}             & \multicolumn{1}{l|} {2.639 (0.253)$*$} \\ \hline  \hline  \hline
 		\multicolumn{1}{|l|}{DTLZ1}              & \multicolumn{1}{l}{381.50 (125.13)} & \multicolumn{1}{l}{337.46 (164.94)} & \multicolumn{1}{l}{231.00 (086.40)$*$} & 222.46 (105.68)$*$             & \multicolumn{1}{l|} {\textbf{205.85 (093.83)$*$}} \\ \hline \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{DTLZ2}              & \multicolumn{1}{l}{0.158 (0.013)} & \multicolumn{1}{l}{0.143 (0.010)$*$} & \multicolumn{1}{l}{ \textbf{0.072 (0.007)$*$}} & 0.095 (0.013)$*$             & \multicolumn{1}{l|} {0.085 (0.010)$*$} \\ \hline  \hline
 		\multicolumn{1}{|l|}{DTLZ3}              & \multicolumn{1}{l}{1248.4 (300.24)} & \multicolumn{1}{l}{1046.8 (405.65)} & \multicolumn{1}{l}{572.2 (312.88)$*$} & \textbf{495.2 (267.59)$*$}            & \multicolumn{1}{l|} {557.2 (234.31)$*$} \\ \hline \hline
-		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{DTLZ4}              & \multicolumn{1}{l}{0.1732 (0.024)} & \multicolumn{1}{l}{0.165 (0.037)} & \multicolumn{1}{l}{ 0.076 (0.007)$*$} & \textbf{0.072 (0.077)$*$}             & \multicolumn{1}{l|} {0.093 (0.017)$*$} \\ \hline  \hline
+		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{DTLZ4}              & \multicolumn{1}{l}{0.1732 (0.024)} & \multicolumn{1}{l}{0.165 (0.037)} & \multicolumn{1}{l}{ 0.076 (0.007)$*$} & \textbf{0.072 (0.08)$*$}             & \multicolumn{1}{l|} {0.093 (0.017)$*$} \\ \hline  \hline
 		\multicolumn{1}{|l|}{DTLZ5}              & \multicolumn{1}{l}{0.152 (0.015)} & \multicolumn{1}{l}{0.139 (0.010)$*$} & \multicolumn{1}{l}{\textbf{0.076 (0.007)$*$}} & 0.084 (0.010)$*$            & \multicolumn{1}{l|} {0.080 (0.008)$*$} \\ \hline \hline
 		\rowcolor[gray]{.95}\multicolumn{1}{|l|}{DTLZ6}              & \multicolumn{1}{l}{15.971 (2.148)} & \multicolumn{1}{l}{14.895 (1.347)$*$} & \multicolumn{1}{l}{\textbf{0.007 (0.001)$*$}} & 0.508 (0.423)$*$            & \multicolumn{1}{l|} {0.664 (0.585)$*$} \\ \hline   \hline
 		\multicolumn{1}{|l|}{DTLZ7}              & \multicolumn{1}{l}{1.033 (0.153)} & \multicolumn{1}{l}{1.012 (0.130)} & \multicolumn{1}{l}{0.044 (0.010)$*$} & \textbf{0.042 (0.013)$*$}            & \multicolumn{1}{l|} {0.105 (0.029)$*$} \\ \hline
 		
 	\end{tabular}
-	\caption{IGD median and standard deviation, in parenthesis. The best values found by a priority function is in bold while the priority function with a Star $*$ is statistically different from None (the MOEA/D-DE with no priority function.)}
+	\caption{IGD median and standard deviation, in parenthesis. The best values found by a priority function is in bold while the priority function with a Star $*$ is statistically different from None (the MOEA/D-DE with no priority function).}
 	\label{table_igd}
 \end{table*}
 
@@ -282,14 +283,14 @@
 
 %\subsubsection{UF benchmark functions}
 
-Figure~\ref{HVS} shows box-plot that exemplify the results found in the UF benchmark and DTLZ functions as well as the Lunar Landing problem in terms of the HV values while Figure~\ref{IGDS} does the same but in terms of the IGD values, but only to the artificial benchmarks. In them we can see that for the artificial benchmarks MRDL as a priority function is slightly better than MOEA/D-DE, considering both HV and IGD values. Norm, R.I. and Random perform the best. On the other hand, MRDL performed the best in the Lunar problem, followed by R.I., Norm and lastly by MOEA/D-DE.
+Figure~\ref{HVS} shows box-plot that exemplify the results found in the UF benchmark and DTLZ functions as well as the Lunar Landing problem in terms of the HV values. Figure~\ref{IGDS} does the same but in terms of the IGD values, but only to the artificial benchmarks. In them we can see that for the artificial benchmarks MRDL is slightly better than MOEA/D-DE, considering both HV and IGD values. Norm, R.I. and Random perform the best. On the other hand, MRDL performs the best in the Lunar problem, followed by R.I., Norm and lastly by MOEA/D-DE.
 
 
-Figure~\ref{PFs} illustrates the PF approximation for the DTLZ4 found by all priority functions and without it, as understood by the results given by the HV and IGD, both Norm and R.I. approximate well the PF. On the other hand it is clear that MRDL did not lead to a better approximation of the PF when compared to the one of MOEA/D-DE. More Figures regarding all experiments and results can be found at the supplementary materials.
+Figure~\ref{PFs} illustrates the PF approximation for the DTLZ4 found by all priority functions and without it. In agreement with the results given by the HV and IGD (Tables~\ref{table_hv} and ~\ref{table_igd}), both Norm and R.I. approximate well the PF. On the other hand it is clear that MRDL did not lead to a better approximation of the PF when compared to the one of MOEA/D-DE. More results can be found at the supplementary materials.
 
 \subsection{HV Results}
 
-Table~\ref{table_hv} shows the results for every priority function measured by HV. First we discuss the results for the UF functions, then the results for the DTLZ functions and lastly the results for the Lunar Problem. Norm as priority function had few good results, with  the best median in UF3 and UF9. In UF3, there is no statistical significant difference for the R.I. while in UF9, there is no statistical significant difference for the Random. The R.I. had the higher median in five functions. Only in UF8 results there exists a statistical significant difference to the other priority functions.  In UF1, UF5 and UF7 statistical significant difference to the results of the Random. Surprisingly, the Random priority function got the higher median in the UF2 (with no statistical difference to R.I.), UF4(with no statistical difference to R.I. or Norm) and UF6 (with no statistical difference to R.I.). Its median is always higher that the one from MRDL. 
+Table~\ref{table_hv} shows the results for every priority function measured by HV. First we discuss the results for the UF functions, then the results for the DTLZ functions and lastly the results for the Lunar Problem. Norm as priority function had few good results, with  the best median in UF3 and UF9. In UF3, there is no statistical significant difference for the R.I. while in UF9, there is no statistical significant difference for the Random. The R.I. had the higher median in five functions. Only in UF8 results there exists a statistical significant difference to the other priority functions.  In UF1, UF5 and UF7 statistical significant difference to the results of the Random. Surprisingly, the Random priority function got the higher median in the UF2 (with no statistical difference to R.I.), UF4 (with no statistical difference to R.I. or Norm) and UF6 (with no statistical difference to R.I.). MRDL had slightly better results than MOEA/D-DE, however only in UF3 and UF8 the results had statistical significance.
 
 Now, we discuss to the results on the DTLZ functions. Norm as priority function lead to several good results in median with the best median in the DTLZ2 (no statistical difference to Random), DTLZ5 (no statistical difference to Random or R.I) , DTLZ6 and DTLZ7 (no statistical difference to R.I.) cases. Only in the DTLZ6 the difference in the results had statistical significance. R.I. performed as the best algorithm in terms of median of HV values only in the DTLZ4 (without any significant difference to Random or Norm). Reinforcing our surprise, the Random priority function got the higher median in the DTLZ1 (with no statistical difference to Norm or R.I.), DTLZ2 (with no statistical difference to R.I.), DTLZ3 and DTLZ5 functions(both without statistical difference to Norm or R.I.), with its median being always higher that the one from MRDL. 
 
@@ -297,15 +298,15 @@ On the Lunar Problem, the best priority function is the MRDL, the only one with 
 
 \subsection{IGD Results}
 
-We again start with the UF results and move after to the DTLZ results. In the Table~\ref{table_igd} we verify that the Norm had the best median in 7 functions, being statistically different to all others in the UF3, UF5, UF7 and UF9 functions. In the UF2 and UF4 the results of the Norm are not statistically different from the R.I. or the Random. In UF8 the results of the Norm not statistically different from the Random. The R.I. had the highest median in the UF1, UF2, UF4, UF6 and UF10 functions. As in the case of UF2, the results of UF1 and UF4 are not statistically different from the R.I. or the Random. In UF6 the results are not statistically different from the Random while on the UF10, there is no statistical different to the results of the Norm. 
+We again start with the UF results and then move to the DTLZ results. In the Table~\ref{table_igd} we verify that the Norm had the best median in 6 functions, being statistically different to all others in the UF3, UF5, UF7 and UF9 functions. In the UF4, the result of the Norm are not statistically different from the R.I. or the Random. In UF8 the results of the Norm not statistically different from the Random. The R.I. had the highest median in the UF1, UF4, UF6 and UF10 functions. The results of UF1 and UF4 are not statistically different from the R.I. or the Random. In UF6 the results are not statistically different from the Random while on the UF10, there is no statistical different to the results of the Norm. Norm had the best results in UF2 having the same median as Norm and R.I., with a lower standard deviation. Again, MRDL had slightly better results than MOEA/D-DE, however only in UF3 and UF8 the results had statistical significance.
 
 Moving to the DTLZ results, we verify that the Norm had the best median in 3 functions, DTLZ2, DTLZ5 (with no statistical difference to Random or R.I.) and DTLZ67 (with no statistical difference to Random). In the DTLZ2 the results had statistical difference. The R.I. perform the best in the DTLZ3 (with no statistical difference to Norm or Random), DTLZ5 and DTLZ7(both with no statistical difference to Norm). Only in the DTLZ1  Random had the highest values(with no statistical difference to Norm or R.I.).
 
 \subsection{Rate Non-dominated Solutions}
 
-The results on the Table~\ref{minor_results} indicate that the Norm leads to the best rate of non-dominated solutions in the artificial benchmarks, being always the fastest, mean time of the median of every function: 1.17; standard deviation (sd): 2.46. The MRDL priority function improved a little the rate of non-dominated solutions, at the cost of a longer execution time (mean time of the median of every function: 37.53; sd: 1.03), which may be alleviated by more costly problems, such as real-world problems.  The same behavior is found in the R.I.(mean time of the median of every function: 39; sd: 5.14) and Random results (mean time of the median of every function: 31.47; sd: 0.41). 
+The results on the Table~\ref{minor_results} indicate that the Norm leads to the best rate of non-dominated solutions in the artificial benchmarks. It is always the fastest, mean time of the median of every function: 1.17; standard deviation (sd): 2.46. The MRDL priority function improved a little the rate of non-dominated solutions, at the cost of a longer execution time (mean time of the median of every function: 37.53; sd: 1.03). The same behavior (better rate of non-dominated solutions, more cost in time) is found in the R.I.(mean time of the median of every function: 39; sd: 5.14) and Random results (mean time of the median of every function: 31.47; sd: 0.41). 
 
-On the Lunar Landing problem, MRDL found less feasible solutions than any variant, although it exceed the rate of non-dominated solutions of the MOEA/D-DE, also it was the fastest, mean time of 4.95 and sd of 0.21. MOEA/D-DE had mean time of 6.67 and sd of 1.98. Norm had the highest rate of feasible solutions, but had the second best rate of non-dominated solutions, surpassed by R.I. Both priority functions were the slowest, Norm: mean time of 6.81 with sd of 0.40; R.I.: mean time of 6.95 and sd of 1.02. 
+On the Lunar Landing problem, MRDL found less feasible solutions than any variant (besides the random). On the other hand, it exceed the rate of non-dominated solutions of the MOEA/D-DE and it was the fastest, mean time of 4.95 and sd of 0.21. MOEA/D-DE had mean time of 6.67 and sd of 1.98. Norm had the highest rate of feasible solutions, but had the second best rate of non-dominated solutions, surpassed by R.I. Both priority functions were the slowest, Norm: mean time of 6.81 with sd of 0.40; R.I.: mean time of 6.95 and sd of 1.02. 
 
 
 
@@ -330,7 +331,11 @@ On the Lunar Landing problem, MRDL found less feasible solutions than any varian
 
 \subsection{Resource Allocation}
 
-Figure~\ref{RAs} illustrates the amount resource allocated by Norm, R.I. and MRDL to every subproblem on UF3 and DTLZ4 problems. We exclude the visuals from MOEA/D-DE since it give the same amount of resource to every problem (200) and of the Random, since it is completely noisy. It is clear from this Figure~\ref{RAs} that, during the execution of the algorithm, the resource allocate to each subproblem is different. This behavior is different given priority functions, illustrating that every priority function allocates different amount of resource given their characteristics. It is also important to highlight that each priority function influences the search differently given the context of the MOP. It called our attention the results form the priority functions Norm and R.I. in the UF9 function, since it appears to be that they prioritized subproblems in an opposite way. In the DTLZ4 they appear to prioritize similar subproblems, focusing the search around the subproblem 280. The distribution of resource is less abrupt in the case of Norm, however R.I. had better results. MRDL influences weakly the distribution of resource allocation, which might indicate its poor performance. In both cases shown the its distribution got closer to 200 resources per subproblem, the rate of not using any priority function. 
+Figure~\ref{RAs} illustrates the amount resource allocated by Norm, R.I. and MRDL to every subproblem on UF3 and DTLZ4 problems. We exclude the visuals from MOEA/D-DE since it give the same amount of resource to every problem (200) and of the Random, since it is completely noisy. 
+
+It is clear from this Figure~\ref{RAs} that, during the execution of the algorithm, the resource allocate to each subproblem is different. This behavior is different given priority functions, illustrating that every priority function allocates different amount of resource given their characteristics. It is also important to highlight that each priority function influences the search differently given different MOPs.
+
+It called our attention the results form the priority functions Norm and R.I. in the UF9 function, since it appears to be that they prioritized subproblems in an opposite way. In the DTLZ4 they appear to prioritize similar subproblems, focusing the search around the subproblem 280. The distribution of resource is less abrupt in the case of Norm, however R.I. had better results. MRDL influences weakly the distribution of resource allocation, which might indicate its poor performance. In both cases shown the its distribution got closer to 200 resources per subproblem, the rate of not using any priority function. 
 
 
 
