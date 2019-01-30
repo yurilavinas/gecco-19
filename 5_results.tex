@@ -1,4 +1,17 @@
 \section{Results}
+% We show images from the UF9 and DTLZ4 functions due to space limitations, but similar images for the other problems are available in the supplementary materials.
+
+% Ideias para resultados
+%%% In terms of IGD and HV, we can seee that in general, using resource allocation performs better than not using resource allocation. RI and Norm achieve similar results, and Random as well for HV, (but not IGD). These results are indicated by the boxplot, the tables, the pareto front, and the willcoxon pairwise analysis. For the Moon Landing problem, all strategies found similar Hypervolume results.
+
+%%% The fact that random performed as well as Norm and RI in HV indicates that there is still space for finding more appropriate priority functions?
+
+%%% Figure 4 shows how the different strategies are allocating results for functions UF9 and DTLZ4. It is interesting to observe that RI and Norm assign similar priorities to the same subproblems in the DTLZ4. But they find opposite priorities to subproblems on the UF9 function.
+
+%%% Dominance and feasibility
+% Another difference that we see among the Resource Allocation strategies is found in the proportion of non dominated and feasible solutions. For the Benchmark problems, the Norm Strategy achieved a very high fraction of non-dominated solutions in the final solution set. In the Lunar Landing problem, the Norm strategy achieved a higher proportion of feasible solutions than the other resource allocation strategies.
+
+
 
 
 \begin{figure*}[!t]
@@ -222,7 +235,7 @@
 		\hline
 		\rowcolor[gray]{.7} \multicolumn{1}{|l|}{Benchmark -- Priority Function}         & \multicolumn{1}{l|}{None} & \multicolumn{1}{l|}{MRDL} & \multicolumn{1}{l|}{Norm} & \multicolumn{1}{l|}{R.I.} & \multicolumn{1}{l|}{Random} \\ \hline \hline  \hline
 
-		Lunar (Feasible (\%))           & 0.1291 (0.08) & 0.0745 (0.13) & 0.1113 (0.16) & 0.0929 (0.19)             & 0.0550 (0.10) \\ 
+		Lunar (Feasible (\%))           & 0.1291 (0.08) & 0.0745 (0.13) & 0.1113 (0.16) & 0.0929 (0.19)             & 0.0550 (0.10) \\
 
 		\rowcolor[gray]{.95}Lunar (Non-dominated (\%))           & 0.0016 (0.01) &0.0018 (0.01) & 0.0059 (0.09) & 0.0083 (0.09)             & 0.0030 (0.02) \\%\hline  \hline \hline
 
