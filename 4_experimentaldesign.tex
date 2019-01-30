@@ -1,20 +1,20 @@
-\section{Experimental Design}
+\section{Experimental Analysis}
 
 %\begin{table}[!t]
 %	\centering
 %\begin{tabular}{@{}|l|l|@{}}
 %		\toprule
 %		\textbf{Parameters}   & \textbf{Values}          \\ \midrule
-%		Initial value $u$     & 0.5, for every subproblem \\ 
+%		Initial value $u$     & 0.5, for every subproblem \\
 %		Population size       & 150                      \\
-%		Neighborhood size T & 20 \\ 
-%		$\delta_p$ & 0.9 \\ 
-%		$\phi$ & 0.5 \\ 
+%		Neighborhood size T & 20 \\
+%		$\delta_p$ & 0.9 \\
+%		$\phi$ & 0.5 \\
 %		$\eta_m$ & 20 \\
 %		$p_m$ & 0.03333333 \\
 %		$n_r$ & 2 \\
 %		\midrule
-%		Number of evaluations & 60000 		\\		
+%		Number of evaluations & 60000 		\\
 %		Number of repetitions & 21                  \\ \bottomrule
 %
 %	\end{tabular}
@@ -23,20 +23,25 @@
 %\label{table1}
 %\end{table}
 
+To examine the effects of Resource Allocation under different priority functions on the MOEA/D, we perform a comparative experiment on benchmark functions and an optimization problem based on real world data.
+In this experiment, we use the MOEA/D-DE implemented by the MOEADr package~\cite{moeadr_package}, modified to include Resource Allocation as described in the previous section. We compare five different RA strategies: No Resource Allocation, and RA using the following priority functions: MRDL, Norm, Relative Improvement and Random. In the following figures and tables, these strategies are referred, respectively, as: None, MRDL, Norm, R.I. and Random.
 
-With our experiment, our goal is to verify how MOEA/D-DE performs when combined with: no priority function (none) and the priority functions 2-Norm, MRDL, relative improvement and random (control). We apply the 4 priority function into MOEA/D-DE (see algorithm~\ref{alg1}) and compare these variants into two artificial benchmark problems and the Lunar Landing real-world problem. The first benchmark used is the DTLZ functions~\cite{deb2005scalable} with 100 dimensions and $k =$ dimensions - number of objectives $+ 1$, where the number of objectives is $2$. The second benchmark is the UF functions~\cite{zhang2008multiobjective}, with 100 dimensions. 
+\subsection{Target Problems}
 
+Two benchmark problem sets are used. The first one is the DTLZ function set~\cite{deb2005scalable}, with 100 dimensions and $k =$ dimensions - number of objectives $+ 1$, where the number of objectives is $2$. The second one is the UF function set~\cite{zhang2008multiobjective}, with 100 dimensions.
 
-%\subsubsection{Real World Benchmark Function}
+The Lunar Landing problem is an optimization problem about the selection of landing sites~\citep{MoonOrbitingSatellite2015}. In lunar exploration it is critical to find suitable landing sites for the rovers. A good landing site must provide enough sunshine for power supply, availability of nearby scientifically interesting materials, little communication interference, and low terrain inclination, among other considerations. The optimization problem is characterized by two decision variables: longitude and latitude; three minimization objectives: total continuous shade days, length of communication window (inverted), and inclination angle; and two constraints: maximum continuous shade days and maximum inclination. This problem is considered to be severely constrained, due to the presence of two craters in the landing area.
 
+\subsection{Experimental Parameters}
 
-The Lunar Landing problem is a real-world problem that simulates the selection of landing sites for lunar landers~\citep{MoonOrbitingSatellite2015}. In lunar exploration it is critical to find suitable landing sites for the rovers. Good landing sites ensure enough sunshine providing enough energy power supply for the rovers within a region with scientifically interesting materials with little difficulties to the exploration. In this minimization problem, the two decision variables are the longitude and latitude with three objectives: the number of continuous shade days, the total communication time (maximization problem that was inverted with the goal of consistency), and the inclination angles. This problem is considered to be a severe constrained problem, due to the presence of two craters. In values, the two constraints are defined as continuous shade days being $ < 0.05$ while inclination angles being $<0.3$
+We use the conventional MOEA/D-DE parameters~\cite{li2009multiobjective} for each Resource Allocation strategy: update size $nr = 2$, neighborhood size $T = 20$, and the neighborhood search probability $\delta_p = 0.9$. The DE mutation operator value is $phi=0.5$. The Polynomial mutation operator values are $\eta_m 20$ and $p_m = 0.03333333$. The decomposition function is Simple-Lattice Design (SLD), the scalar aggregation function is Weighted Sum (WS), the update strategy is the Restricted Update Strategy and we performed a simple linear scaling of the objectives to [0, 1].
 
-%\subsubsection{Parameter Settings}
+For every strategy/function pair we perform 21 repetitions with 70000 function evaluations and population size $N=350$. Because the Lunar Landing problem is severely constrained, we used a much higher population size $N=5050$, and a slighly lower number of function evaluations (60000), following the winner of a recent competition using this problem~\cite{Competition2018}.
 
+\subsection{Experimental Evaluation}
 
-For every combination, the population size $N = 350$, the update size $nr = 2$, the neighborhood size $T = 20$, and the neighborhood search probability $\delta_p = 0.9$. The DE mutation operator value is $phi=0.5$. The Polynomial mutation operator values are $\eta_m 20$ and $p_m = 0.03333333$~\cite{campelo2018moeadr}. The number of executions is set to 21. For each execution, the number of functions evaluations is 70000. Since the Lunar Landing is a severe constrained one, we chose the population size $N = 5050$ and the number of functions evaluations is 60000. Finally, the decomposition method used is the Simple-Lattice Design (SLD), the scalar aggregation function used is Weighted Sum (WS), the update strategy used is the Restricted update strategy and we performed a simple linear scaling of the objectives to [0, 1].
+We compare the results of the different strategies based on their Hypervolume (HV) and Inverted Generational Distance~\footnote{IGD could not be calculated for the Lunar Landing problem, which has no Ideal Reference Pareto Front.} (IGD) metrics. Higher values of the HV indicate better approximations of the Pareto Front, while lower values of the IGD indicate better approximations. We also evaluate the proportion of non-dominated solutions and the number of feasible solutions.
 
+For the calculation of HV, the objective function was scaled to the $0,1$ interval, and the reference point was set to $(1,1)$ for the 2-objective benchmark problems, $(1,1,1)$ for the 3-objective benchmark problems, and $(1,0,1)$ for the Lunar Landing Problem~\cite{Competition2018}).
 
-We perform statistical tests on the hypervolume (HV) metric values and Inverted Generational Distance (IGD) for measuring the quality of a set of obtained non-dominated solutions found by the algorithms on the, DTLZ and UF benchmark problem. Before calculating the HV value, the objective function was scaled between $0$ and $1$. The reference point for the HV calculation was set to $(1, 1)$. For the real-world Lunar Landing problem, we only perform statistical tests on the hypervolume (HV) metric values using reference point as $(1, 0, 1)$. Higher values of the HV indicate better approximations while lower values of the IGD indicate better approximations. In order to verify any statistical difference in the average performance given the different algorithms, the Pairwise Wilcoxon Rank Sum Tests was used, with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method. For reproducibility the code is made available at XXX.
-
+To verify any statistical differences in the results for the different strategies, we use the Pairwise Wilcoxon Rank Sum Tests with confidence interval $\alpha = 0.05$ and with the Hommel adjustment method for multiple comparisons. For reproducibility purposes, all the code and data used in these experiments are available at [ANONYMIZED].
