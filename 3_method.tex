@@ -44,7 +44,7 @@ Independently of the method used to calculate the priority function, we initiali
 		
 		\State Input: $X^{t}$ decision vectors of solutions; $X^{t-1}$, decision vectors from the previous solutions; N, the population size.
 		\For {i=1 to N} 
-			\State u[i] = $||X^{t}_i$ - $X^{t}_i||$
+			\State u[i] = $||X^{t}_i$ - $X^{t-1}_i||$
 		\EndFor
 		\State u = scale (u) // between 0 and 1\\
 	\Return u
@@ -73,21 +73,25 @@ The idea of using the Norm as priority function is that by considering diversity
 	\caption{MRDL}\label{alg2}
 	\begin{algorithmic}[1]
 		
-		\State Input: old MRDL (initial value is 0); $Y^t$, objective function values from the incumbent solutions; $Y^{t-1}$, objective function values from the incumbent solutions of the previous iteraction; N, the population size.
+		\State Input: old MRDL (initial value is 0); $Y^t$, objective function values from the incumbent solutions; $Y^{t-1}$, objective function values from the incumbent solutions of the previous iteraction; N, the population size.		
 		\For {i=1 to N}
-		\State find $h \in |P|$ where  ($P_h \succeq C_i$) and $||P_h - C_i  ||$ is minimal.
-		\State If none is found, MRDL = $-\infty$ and move to the next $i$.
-		\State $d.conv = C_i - P_h$.
+		\State find index $h$ where  ($Y^{t-1}_h \succeq Y^t_i$) and $||Y^{t-1}_h - Y^t_i  ||$ is minimal.
+		\If {If none is found} 
+		\State MRDL[i] = $-\infty$
+		\Else
+		\State $d.conv = Y^t_i - Y^{t-1}_h$.
 		\For {j=1 to N}
-		\State $p \prime = P_j - P_h$
-		\State $c \prime = c_j - c_i$
+		\State $p \prime = Y^{t-1}_j - Y^{t-1}_h$
+		\State $c \prime = Y^t_j - Y^t_i$
 		\State $proj_{d.conv}*p \prime = \dfrac{sum(conv \cdot p \prime)}{(p \prime \times p \prime)}*p \prime$
 		
 		\State $ proj_{d.conv}*c \prime = \dfrac{sum(conv \cdot c \prime)}{(c \prime \times c \prime)}*c \prime$
 		
-		\State $RDL_j = \dfrac{ ||p \prime - proj_{d.conv}p \prime|| }{||c \prime - proj_{d.conv}c \prime||}            $
+		\State $RDL_j = \dfrac{ ||p \prime - proj_{d.conv}p \prime|| }{||c \prime - proj_{d.conv}c \prime||}$\\
+		
 		\EndFor
-		MDRL[i] = maximum $RDL_j$
+		MDRL[i] = maximum $RDL$
+		\EndIf
 		\EndFor
 		\State u = 1 - scale (MRDL - old MRDL) // between 0 and 1\\
 	\Return u, MRDL
@@ -239,11 +243,19 @@ RDL is a diversity measurement quantity that indicates the amount of diversity l
 	\caption{Relative Improvement}\label{alg5}
 	\begin{algorithmic}[1]
 		
-		\State Input:   $Y^t$, objective function values from the incumbent solutions; $Y^{t-1}$, objective function values from the $\Delta T$ previous solutions;
+		\State Input:   $Y^t$, objective function values from the incumbent solutions; $Y^{t-1}$, objective function values from the $\Delta T$ previous solutions, $u$ from the previous $\Delta T$ iteraction;
 		\For {i=1 to N}
-		\State u[i] = (C[i] - P[i])/C[i]
+		\State $\delta[i] = \frac{Y^t[i] - Y^{t-1}[i]}{Y^t[i]}$
+		\If {$\delta[i] > 0.001$} 
+		\State u[i] = $(0.95 + 0.05 \cdot \frac{\delta[i]}{0.001}) \cdot u[i]$
+		\Else 
+		\State u[i] = 1
+		\EndIf
+		
+		
 		\EndFor
-		u / (max(u) + $1.0 x 10^{-50}$)\\
+		
+		\State u / (max(u) + $1.0 x 10^{-50}$)\\
 		\Return u
 	\end{algorithmic}
 \end{algorithm}

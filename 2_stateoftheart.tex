@@ -5,15 +5,28 @@
 %Following the discussion opened in the introduction, we need to define an utility function to allocate the number of evaluations to subproblems. 
 We define priority functions (also called utility functions) as one way of establishing preferences~\cite{chankong1983multiobjective} between solutions for resource allocation. These functions are used to decide how to allocate computational resources among subproblems by monitoring the algorithm search and guiding the distribution over generations~\cite{cai2015external}. 
 
-Only a few studies have been concerned with resource allocation. We highlight two groups. The first is composed by MOEA/D-GRA~\cite{zhou2016all}, MOEA/D-DRA~\cite{zhang2009performance} and MOEA/D-AMS~\cite{chiang2011moea}. The other is composed by EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative}.
+Only a few studies have been concerned with resource allocation. We highlight two groups. The first is composed by MOEA/D-GRA~\cite{zhou2016all}, MOEA/D-DRA~\cite{zhang2009performance} and in the Two-Level Stable Matching-Based Selection in MOEA/D~\cite{nasir2011improved}. The other is composed by EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative}.
 
-According to Zhou and Zhang~\cite{zhou2016all}, MOEA/D-GRA may be seen as an extension of MOEA/D-DRA and MOEA/D-AMS. They reason that all these algorithms use a very similar priority function and that MOEA/D-GRA can simulate the behavior of MOEA/D-DRA or MOEA/D-AMS by changing the values of a single parameter. This priority function is named as the relative improvement (R.I.) and defines the priority values of each subproblem $i=1,...,N$, as
+According to Zhou and Zhang~\cite{zhou2016all}, MOEA/D-GRA may be seen as an extension of MOEA/D-DRA and MOEA/D-AMS~\cite{chiang2011moea}. They reason that all these algorithms use a very similar priority function and that MOEA/D-GRA can simulate the behavior of MOEA/D-DRA or MOEA/D-AMS by changing the values of a single parameter. 
+
+This priority function is named as the relative improvement (R.I.) and defines the priority values of each subproblem $i=1,...,N$, as
 
 \begin{equation}\label{priority}
-	u_i = \dfrac{\text{old function value}-\text{new function value}}{\text{old function value}}.
+	\delta_i = \dfrac{\text{old function value}-\text{new function value}}{\text{old function value}}.
 \end{equation}
 
+For MOEA/D-GRA $u_i = \delta_i$, but in MOEA/D-DRA, as well as in the Two-Level Stable Matching-Based Selection in MOEA/D, a second equation is used,
 
+\[
+u_i= 
+\begin{cases}
+
+(0.95 + 0.05 \cdot \frac{\delta_i}{0.001} \cdot u_i), & \text{if } \delta_i > 0.001,
+\\
+1,              & \text{otherwise}
+
+\end{cases}\label{priority2}
+\]
 The R.I. is based the assumption that if a subproblem has been improved over the last $\Delta T$ generations (\textit{old function value}), it should have a high probability of being improved over the next generations. 
 	
 The priority function used EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative} differ from the ones in the MOEA/D-GRA group. In their case, the framework keeps two populations: one working population, and one external archive. This priority function estimates priorities for a subproblem given the number of solutions from that subproblem that are in the external archive.
@@ -22,7 +35,7 @@ Together these studies indicate that it is worth monitoring the algorithm behavi
 
 Based on the recent success of addressing resource allocation with priority functions, we aim to isolate priority functions by analyzing their impact in MOEA/D. In this study we propose two new priority functions to further understand how priority functions influence the performance of MOEA/D framework. We believe in the idea that diversity is a critical issues of a search process in any multi-objective algorithm. Therefore, we consider using priority functions to address lack of diversity aiming to make solutions better spread among each other and proposed two new priority functions. 
 
-These two priority functions focus on different aspects of the diversity:  how to better spread solutions along the PF (diversity on the objective space) by using the MRDL and how to better spread solutions the PS (diversity on the decision space) by using the 2-Norm of the difference between two solutions.
+These two priority functions focus on different aspects of the diversity:  how to better spread solutions along the PF (diversity on the objective space) by using the MRDL and how to better spread solutions the PS (diversity on the decision space) by using the Norm of the difference between two solutions.
 
 
 
@@ -40,11 +53,4 @@ Among the metrics that only measure diversity, we highlight those that calculate
 
 In this work we chose to apply the MRDL as the strategy to measure diversity on the objective space. This is an online diversity metric estimates the diversity loss of a solution to the whole population~\cite{gee2015online}. High values indicate the existence of similar solutions or that the offspring solution is close to the convergence direction. The further an objective vector of a solution is from the convergence direction, the more it contributes for the diversity of the approximated the Pareto front. The MRDL is the maximum value for Relative Diversity Loss (RDL) of each solution.
 
-To deal with diversity on the decision space we consider the similarity of decision vectors of consecutive iteractions given by the 2-Norm. The 2-Norm is defined similarly as the R.I., since in both a difference between vectors values from distinct iteractions. However there are two main differences between R.I. and 2-Norm priority function. The first is that while the R.I. considers the function values of solutions the 2-Norm considers its decision values. The second difference is that in R.I. the next step is scalarizing the values between 0 and 1 and in the 2-Norm priority function, the 2-Norm value of that difference is computed prior to scalarizing. 
-
-
-
-
-
-
-
+To deal with diversity on the decision space we consider the similarity of decision vectors of consecutive iteractions given by the (2-)Norm. The Norm is defined similarly as the R.I., since in both a difference between vectors values from distinct iteractions. However there are two main differences between R.I. and Norm priority function. The first is that while the R.I. considers the function values of solutions the Norm considers its decision values. The second difference is that R.I. also considers equation~\ref{priority2}.
