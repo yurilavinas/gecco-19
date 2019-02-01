@@ -1,27 +1,20 @@
 \section{Discussion}
 %Restating the aims of the study
-The aim of the present research we investigated whether priority functions relate to MOEA/D.
-We proposed two new priority functions for estimating difficulty and calculating priority in Resource Allocation, related to diversity. Therefore, we \emph{isolate} the priority functions in MOEA/D as the only variant. This aimed to effectively examine their effect on the performance of MOEA/D. We defined two priority functions based on diversity. The first, the MRDL, focus on diversity on the objective space while the second the Norm,  focus on diversity on the decision space. We then compared these new priority functions with the most popular approach, the Relative Improvement, and the standard MOEA/D.
+The aim of the present research was to investigate how priority functions relate to MOEA/D. We proposed two new priority functions (related to diversity) for estimating difficulty and for calculating priorities among subproblems for better Resource Allocation. We \emph{isolated} the priority functions in MOEA/D as the only variant. This allowed us to effectively examine their effect on the performance of MOEA/D.
 
-%Summarising main research findings
-This study has shown that using Norm achieved high HV and IGD values, excellent rate of non-dominated solutions on the benchmark problems, and highest rate of feasible solutions among all priority functions in the severely constrained lunar exploration.Interestingly, these results were also superior that the results of the R.I. in terms of the rate of non-dominated solutions. This result indicates that Norm indeed leads to more diversity of the final solution set, demonstrating the effectiveness of this priority function. 
+These two new priority functions focus on different aspects of diversity. The first, the MRDL, addresses diversity on the objective space while the second, the Norm, addresses diversity on the decision space. We then compared these new priority functions with the most popular approach, the Relative Improvement, and the standard MOEA/D.
 
-In contrast, MRDL performed just slightly better than MOEA/D-DE. We hypothesize that the reason for these results are related to MRDL measuring the diversity of a solution against all the population, while 2-Norm and R.I. consider only the a relationship of the current solution against its parent. It is in our understanding that other priority functions that consider diversity in the decision space could be studied as one way of answering this hypothesis. 
+This study has shown that using Norm as priority function effectively improves the performance of MOEA/D, since it achieved high HV and IGD values, excellent rates of non-dominated solutions on the benchmark problems. It also lead to the highest rate of feasible solutions among all priority functions in the severely constrained lunar exploration. Some of these results were superior than the results of the R.I. (specially the rate of non-dominated solutions). These results indicate that Norm indeed leads to more diversity of the final solution set, demonstrating the effectiveness of it as a priority function and as a direct way to increase diversity in MOEA/D. This suggests that it really there is a role for diversity in promoting better performance in HV and IGD metrics as well as higher rates of non-dominated solutions.  
+
+In contrast, MRDL performed just slightly better than MOEA/D. We hypothesize that the reason for these results is that MRDL measures the diversity of a solution against all the population. It is in our understanding that other priority functions that consider diversity in the decision space should be studied with the goal of answering this hypothesis. 
+
+%The scope of this study was limited to MOEA/Ds without archive populations. Therefore, priority functions that concentrate resources to subproblems that generates more non-dominated solutions to the archive population were not considered in this study~\cite{cai2015external},~\cite{kang2018collaborative}. 
+
+Overall, the findings of this work strengthens the idea that exploring priority function focusing on critical issues (such as diversity and rate of non-dominated solutions) is worth (worthy?) of attention. This suggests that using only priority functions can be very effective for better Resource Allocation. We also confirmed that R.I., a common priority function from the literature, can be a good choice depending on the MOP being addressed. However, given the surprising results of Random, we infer that there is still space for finding more appropriate priority functions.
+
+
+Our findings complement recent studies that addressed Resource Allocation with priority functions. For example, we extend the study of Zhou and Zhang in MOEA/D-GRA\cite{zhou2016all}, by exploring diversity in priority functions, and we carried out investigations on priority functions using only one population, in the contrary of the work of Kang et al. in MOEA/D-CRA~\cite{kang2018collaborative}. Our study certainly contributes to the literature, since we contribute to the understanding that diversity as priority functions are a simple yet efficient mechanism for improving the performance of MOEA/D as well as the rate of feasible and non-dominated solutions. 
  
- %Suggesting implications for the field of knowledge
- Overall, this study strengthens the idea that exploring priority function focusing on critical issues is worth of attention. This would be a fruitful area for further works. Also, we confirmed that R.I., a common priority function from the literature, can be a good choice depending on the MOP being addressed. On the other hand, given the astonishing results of Random, we infer that there is still space for finding more appropriate priority functions
- 
- 
- %Suggesting implications for the field of knowledge and then Recognising the limitations of the current study
- The findings of this investigation complement those of earlier studies that addressed the issue of Resource Allocation by using priority functions, such as MOEA/D-GRA\cite{zhou2016all}, by integrating diversity as priority function, and MOEA/D-CRA~\cite{kang2018collaborative}, by using only one population. We verified that indeed using only priority functions is effective to better allocate resources. This suggests that it really exists a role for diversity in promoting better performance in HV and IGD metrics as well as higher rates of non-dominated solutions.
-
-
-%Making recommendations for further research work and Setting out recommendations for practice or policy
-
-
-The scope of this study was limited to MOEA/Ds without archive populations. Therefore, Priority functions that concentrate resources to subproblems that generates more non-dominated solutions to the archive population were not considered in this study~\cite{cai2015external},~\cite{kang2018collaborative}. In spite of this, this study certainly contribute to the literature by adding the knowledge that addressing diversity in priority function are a simple yet efficient mechanism for improving the performance of MOEA/D as well as the rate of feasible and non-dominated solutions. 
-
-
-
-There are many components and variants of MOEA/D and is interesting to combine the Norm priority function with the them. Then, we can better further explore the relationship of priority functions based on diversity with the others components and variants of the MOEA/D framework. How to define more efficient and effective utility functions for different problems is also worth further investigation (such as priority function that also consider constraints) as well as verify the results of using priority function in others real-world problems.
+%not important, may be left out
+There are many components and variants of MOEA/D and is interesting to combine the Norm priority function with the them. Then, we can further explore the relationship of priority functions based on diversity with the others components and variants of the MOEA/D framework. How to define more efficient and effective utility functions for different problems is also worth further investigation (such as priority function that also consider constraints) as well as verify the results of using priority function in other real-world problems.
 %
