@@ -16,25 +16,27 @@
 		\State Update the population by $y$.
 		\EndIf
 		\EndFor
-		\State  Evaluate and after $\Delta T$ generations, keep updating \textit{\textbf{u}} by a priority function.
+		\State  Evaluate and after $\Delta T$ iterations, keep updating \textit{\textbf{u}} by a priority function.
 		\EndWhile
 	\end{algorithmic}
 	%\vspace{-1em}
 \end{algorithm}
 
-In this study we use the basic algorithm framework~\ref{alg1} with priority functions of MOEA/D-GRA. In contrast to MOEA/D-GRA we only consider the basic algorithm and no other variant. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation without a population archive. In consequence any priority functions might be easily integrated to MOEA/D framework. 
+In this study we use the basic framework in algorithm~\ref{alg1} with priority functions of MOEA/D-GRA. In contrast to MOEA/D-GRA we only consider the basic algorithm and no other variant. The benefit of using MOEA/D-GRA is that it has a simple code structure and represents well the class of variants of MOEA/D with resource allocation without a population archive. In consequence any priority functions might be easily integrated to the MOEA/D framework. 
 
-This basic algorithm is similar to the MOEA/D-DE~\cite{zhang2009performance} with exception of lines 4 and 7. Line 4 deals with the selection of solutions given their priority function values, while the line 7 deals with the calculation of the priority function values. All other procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. We highlight that the neighborhood is only calculated in the initialization period.
+This basic algorithm is similar to the MOEA/D-DE~\cite{zhang2009performance} with exception of lines 4 and 7. Line 4 allocation computational resources to a solution based on their priority value $u_i$, while line 7 updates the priority function values. 
+
+Line 4 deals with the selection of solutions given their priority function values, while the line 7 deals with the calculation of the priority function values. All other procedures and parameters are the same as in MOEA/D-DE~\cite{li2009multiobjective}. We highlight that the neighborhood is only calculated in the initialization period.
 
 %\subsection{Priority Functions}
 
-It it is  in our understand that priority functions provides an important property. They allow ways of designing MOEA/D variants that might focus on desired characteristics, such as diversity, performance contribution, convergence to a specific region of the PF or others. This is possible because different methods can be used as priority functions to create the vector $u$ in algorithm~\ref{alg1}. 
+The selection of priority functions provides an important way to control MOEA/D. They allow ways of designing MOEA/D variants that might focus on desired characteristics, such as diversity, performance contribution, convergence to a specific region of the PF or others. This is possible because different methods can be used as priority functions to create the vector $u$ in algorithm~\ref{alg1}. 
 
-In this work we chose to study diversity on the objective space, diversity in the decision space, and the relative improvement, from MOEA/D-DRA as our priority functions. Next we give a brief explanation of why we chose to consider these methods as well as a random (control) method and we describe how to calculate them in details.
+In this work we chose to study diversity on the objective space, diversity in the decision space, and the Relative Improvement, from MOEA/D-DRA as our priority functions. Next we give a brief explanation of why we chose to consider these methods as well as a random (control) method and we describe how to calculate them in details.
 
-Independently of the method used to calculate the priority function, we initialize the value of the vector $u=1$, as in MOEA/D-DRA. As in DRA and GRA we have a learning period, $\Delta T$ generations (\textit{old function value}). Here $\Delta T=20$ for artificial benchmarks, as in MOEA/D-GRA~\cite{zhou2016all}, while for the real-world problems, we chose $\Delta T=2$, by trial and error. A sensitivity analyzes should be performed for deciding suitable initial values for $u$ and for $\Delta T$.
+Independently of the method used to calculate the priority function, we initialize the value of the vector $u=1$, as in MOEA/D-DRA. As in DRA and GRA we have a learning period of $\Delta T$ iterations. Here $\Delta T=20$ for artificial benchmarks, as in MOEA/D-GRA~\cite{zhou2016all}, while for the real-world problems, we chose $\Delta T=2$, by trial and error. A sensitivity analysis should be performed for deciding suitable initial values for $u$ and for $\Delta T$.
 
- It should also be noticed that once less than $3$ or less subproblems would be improved in a given iteraction $i$, we reset the priority vector $u = 1$  and all subproblems will be chosen for offspring reproduction at the that $i$ iteraction.
+ It should also be noted that if the priority function values results in less than 3 subproblems being updated in one iteration, we reset the priority vector $u = 1$  and all subproblems will be chosen for offspring reproduction at the that iteration.
 
 \subsection{Priority Function - Norm of the difference of current solutions and its parents} 
 
@@ -51,19 +53,21 @@ Independently of the method used to calculate the priority function, we initiali
 	\end{algorithmic}
 \end{algorithm}
 
+To consider diversity on the decision space, we propose a priority function based on the norm of the difference between the current solution and its parent. Algorithm~\ref{alg3} gives the details on implementation.
+
 The priority function proposed that considers diversity on the objective space is based on the (2-)Norm of the difference of the current solution to its parent.
 
 \begin{equation}
  \text{Norm}_i = ||\text{current solution}_i - \text{parent solution}_i||.
 \end{equation}
 
-Then, we scale the values to be between 0 and 1, by using the next equation.
+Then, we scale the values to be between 0 and 1, by using the next equation, based on the values from the entire solution set,
 
 \begin{equation}\label{scaling}
  \text{Norm}_i = (\text{Norm}_i - \text{min  Norm}) / (\text{max Norm} - \text{min Norm})
 \end{equation}
 
-The idea of using the Norm as priority function is that by considering diversity as the priority function more resources are given to incumbent solutions that are similar. Hence more effort is used focusing on modifying solutions that are close in the decision space, leading to a higher exploration of the decision space.
+The idea of using the Norm as priority function is that by considering diversity as the priority function more resources are given to incumbent solutions that are similar to their parents, forcing them to update more often and leading to a higher exploration of the decision space.
 
 
 \subsection{Priority Function - MRDL} 
@@ -90,7 +94,7 @@ The idea of using the Norm as priority function is that by considering diversity
 		\State $RDL_j = \dfrac{ ||p \prime - proj_{d.conv}p \prime|| }{||c \prime - proj_{d.conv}c \prime||}$\\
 		
 		\EndFor
-		MDRL[i] = maximum $RDL$
+		MRDL[i] = maximum $RDL$
 		\EndIf
 		\EndFor
 		\State u = 1 - scale (MRDL - old MRDL) // between 0 and 1\\
@@ -98,12 +102,13 @@ The idea of using the Norm as priority function is that by considering diversity
 	\end{algorithmic}
 \end{algorithm}
 
+To consider diversity on the objective space, we propose a priority function based on the the Maximum Relative Diversity Loss, MRDL~\cite{gee2015online}.
+
 
 The diversity on objective space as a priority function  is based on the Maximum Relative Diversity Loss, MRDL~\cite{gee2015online}.  The idea of using MRDL is that by measuring diversity on the objective space, more resources are given to incumbent solutions that have similar objective function values between two consecutive iteractions. Therefore, it is expected that this will lead to a higher exploration of the objective space. Algorithm~\ref{alg2} gives the details on implementation.
 
+The calculation of MRDL depends on the concept of weak dominance~\cite{zitzler2003performance}. A solution $a$ weakly dominates $b$ if in all objectives $a \geq b$ (note that $a \succeq a$).
  
-Before explaining the details of how to calculate the MRDL, we must introduce the definition of weak dominance. As in the study by Zitzler et al.~\cite{zitzler2003performance} study, weak dominance ($A \succeq B$) means that any solution in set B is weakly dominated by a solution in set A. However, this does not rule out equality, because $A \succeq A$ for all approximation sets $A$.
-
 Let $N$ be the number of incumbent solutions and the objective values of iteraction $t$ be $Y^t$ and the objectives values of iteraction $t-1$ be $Y^{t-1}$. For each incumbent solution $i$, find index $h \in Y^{T-1}$. This index is the index of a parent that weak dominates the solution $i$. If $h$ is not found (no parent weak dominates the solution) the MRDL value for this solution is set to $-\infty$. Given $i$ and $h$, for each subproblem, the value of Relative Diversity Loss (RDL) is given by 
 
 \begin{equation}
@@ -113,7 +118,7 @@ RDL = \dfrac{ ||p \prime - proj_{d.conv}p \prime|| }{||c \prime - proj_{d.conv}c
 
 
 %TODO: brief explaination of the idea of RDL
-RDL is a diversity measurement quantity that indicates the amount of diversity loss of an individual solution between two consecutive generations. High values of RDL imply a reduction of the solution spread, since the further an objective vector of a solution is from the convergence direction, the more it contributes in terms of diversity in the objective space~\cite{gee2015online}. The maximum value of RDL is the MRDL of the solution $i$.
+RDL is a diversity measurement quantity that indicates the amount of diversity loss of an individual solution between two consecutive iterations. High values of RDL imply a reduction of the solution spread, since the further an objective vector of a solution is from the convergence direction, the more it contributes in terms of diversity in the objective space~\cite{gee2015online}. The maximum value of RDL is the MRDL of the solution $i$.
 
 
 
@@ -243,7 +248,7 @@ RDL is a diversity measurement quantity that indicates the amount of diversity l
 	\caption{Relative Improvement}\label{alg5}
 	\begin{algorithmic}[1]
 		
-		\State Input:   $Y^t$, objective function values from the incumbent solutions; $Y^{t-1}$, objective function values from the $\Delta T$ previous solutions, $u$ from the previous $\Delta T$ iteraction;
+		\State Input:   $Y^t$, objective function values from the incumbent solutions; $Y^{t-\Delta T}$, objective function values from incumbent solution of iteration $t -\Delta T$, $u$ from the previous $\Delta T$ iteration;
 		\For {i=1 to N}
 		\State $\delta[i] = \frac{Y^t[i] - Y^{t-1}[i]}{Y^t[i]}$
 		\If {$\delta[i] > 0.001$} 
@@ -260,7 +265,7 @@ RDL is a diversity measurement quantity that indicates the amount of diversity l
 	\end{algorithmic}
 \end{algorithm}
 
-Here we give a brief description of the Relative Improvement (R.I.), the priority function used in MOEA/D-DRA, MOEA/D-GRA and others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few generations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}. 
+Here we give a brief description of the Relative Improvement (R.I.), the priority function used in MOEA/D-DRA, MOEA/D-GRA and others. This priority function aims to measure subproblem hardness and then it helps allocating more resource to subproblems that have  improved more over the next few iterations. Algorithm~\ref{alg5} gives the details on implementation of the equation~\ref{priority}. 
 
 We highlight that R.I. was first introduced in the context of the unconstrained MOEA competition in the CEC 2009~\cite{zhang2009performance}, being the winner of that competition~\cite{zhang2008multiobjective}. Also, in this competition the UF benchmark functions were introduced.
 
@@ -278,7 +283,7 @@ We highlight that R.I. was first introduced in the context of the unconstrained 
 	\end{algorithmic}
 \end{algorithm}
 
-The random priority function is used a base for comparison. Given no information besides the size of the population, we define the vector of priority $u$ at random. Algorithm~\ref{alg4} gives the details on implementation. 
+The random priority function is used as basis for comparison. Given no information besides the size of the population, we define the vector of priority $u$ from a uniform distribution. Algorithm~\ref{alg4} gives the details on implementation. 
 %
 %
 %

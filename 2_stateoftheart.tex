@@ -3,17 +3,19 @@
 \subsection{Priority functions}
 
 %Following the discussion opened in the introduction, we need to define an utility function to allocate the number of evaluations to subproblems. 
-We define priority functions (also called utility functions) as one way of establishing preferences~\cite{chankong1983multiobjective} between solutions for resource allocation. These functions are used to decide how to allocate computational resources among subproblems by monitoring the algorithm search and guiding the distribution over generations~\cite{cai2015external}. 
+We define priority functions (also called utility functions) as one way of establishing preferences~\cite{chankong1983multiobjective} between solutions for resource allocation. These functions are used to decide how to allocate computational resources among subproblems by monitoring the algorithm search and guiding the distribution over iterations~\cite{cai2015external}. 
 
 Only a few studies have been concerned with resource allocation. We highlight two groups. The first is composed by MOEA/D-GRA~\cite{zhou2016all}, MOEA/D-DRA~\cite{zhang2009performance} and in the Two-Level Stable Matching-Based Selection in MOEA/D~\cite{nasir2011improved}. The other is composed by EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative}.
 
-According to Zhou and Zhang~\cite{zhou2016all}, MOEA/D-GRA may be seen as an extension of MOEA/D-DRA and MOEA/D-AMS~\cite{chiang2011moea}. They reason that all these algorithms use a very similar priority function and that MOEA/D-GRA can simulate the behavior of MOEA/D-DRA or MOEA/D-AMS by changing the values of a single parameter. 
+According to Zhou and Zhang~\cite{zhou2016all}, MOEA/D-GRA could be seen as an extension of MOEA/D-DRA and MOEA/D-AMS~\cite{chiang2011moea}. They reason that all these algorithms use a very similar priority function and that MOEA/D-GRA can simulate the behavior of MOEA/D-DRA or MOEA/D-AMS by changing the values of a single parameter. 
 
-This priority function is named as the relative improvement (R.I.) and defines the priority values of each subproblem $i=1,...,N$, as
+This priority function is named as the Relative Improvement (R.I.) and defines the priority values of each subproblem $i=1,...,N$, as
 
 \begin{equation}\label{priority}
 	\delta_i = \dfrac{\text{old function value}-\text{new function value}}{\text{old function value}}.
 \end{equation}
+
+Where new function value is the value at the current iteration ($T$) and old function value is the value at iteration ($T - \Delta T$).
 
 For MOEA/D-GRA $u_i = \delta_i$, but in MOEA/D-DRA, as well as in the Two-Level Stable Matching-Based Selection in MOEA/D, a second equation is used,
 
@@ -27,15 +29,15 @@ u_i=
 
 \end{cases}\label{priority2}
 \]
-The R.I. is based the assumption that if a subproblem has been improved over the last $\Delta T$ generations (\textit{old function value}), it should have a high probability of being improved over the next generations. 
+The R.I. is based the assumption that if a subproblem has been improved over the last $\Delta T$ iteration (\textit{old function value}), it should have a high probability of being improved over the next iterations. 
 	
 The priority function used EAG-MOEA/D~\cite{cai2015external} and MOEA/D-CRA~\cite{kang2018collaborative} differ from the ones in the MOEA/D-GRA group. In their case, the framework keeps two populations: one working population, and one external archive. This priority function estimates priorities for a subproblem given the number of solutions from that subproblem that are in the external archive.
 
-Together these studies indicate that it is worth monitoring the algorithm behavior and guiding its search, but it is unclear how the priority functions influence into the results since in all the impact of using priority functions was not isolated. That is, in all of the work previously mentioned incremented MOEA/D with priority functions and at least an extra. For example, in Zhang et al. used a 10-tournament selection in MOEA/D-DRA~\cite{zhang2009performance}, while Zhou and Zhang used a new replacement strategy in MOEA/D-GRA~\cite{zhou2016all}. Chiang in MOEA/D-AMS proposes an adaptive mating selection mechanism as dynamically adjusts the mating pools of individuals~\cite{chiang2011moea}. Finally, both the studies of Cai and Lai in  EAG-MOEA/D~\cite{cai2015external} and Kang et al. in MOEA/D-CRA~\cite{kang2018collaborative} used an archive population.
+Together these studies indicate that it is worth monitoring the algorithm behavior and guiding its search, but it is unclear how the choice priority functions influence the results since in all the impact of using priority functions was not isolated. In all Resource Allocation works mentioned above the choice of priority function was just one of multiple changes applied to the base framework. For example, in Zhang et al. used a 10-tournament selection in MOEA/D-DRA~\cite{zhang2009performance}, while Zhou and Zhang used a new replacement strategy in MOEA/D-GRA~\cite{zhou2016all}. Chiang in MOEA/D-AMS proposes an adaptive mating selection mechanism as dynamically adjusts the mating pools of individuals~\cite{chiang2011moea}. Finally, both the studies of Cai and Lai in  EAG-MOEA/D~\cite{cai2015external} and Kang et al. in MOEA/D-CRA~\cite{kang2018collaborative} used an archive population.
 
-Based on the recent success of addressing resource allocation with priority functions, we aim to isolate priority functions by analyzing their impact in MOEA/D. In this study we propose two new priority functions to further understand how priority functions influence the performance of MOEA/D framework. We believe in the idea that diversity is a critical issues of a search process in any multi-objective algorithm. Therefore, we consider using priority functions to address lack of diversity aiming to make solutions better spread among each other and proposed two new priority functions. 
+Based on the recent success of Resource Allocation with priority functions, we aim to isolate priority functions by analyzing their impact in MOEA/D. In this study we propose two new priority functions to further understand how priority functions influence the performance of MOEA/D framework. We believe in the idea that diversity is a critical issue in the search process for any multi-objective algorithm. Therefore, we consider using priority functions to address lack of diversity aiming to make solutions better spread among each other.
 
-These two priority functions focus on different aspects of the diversity:  how to better spread solutions along the PF (diversity on the objective space) by using the MRDL and how to better spread solutions the PS (diversity on the decision space) by using the Norm of the difference between two solutions.
+The two proposed priority functions focus on different aspects of diversity:  how to better spread solutions along the Pareto Front (diversity on the objective space) and how to better spread solutions the Pareto Set (diversity on the decision space). For the first we define the MRDL priority function and for the second, the Norm priority function.
 
 
 
@@ -51,6 +53,6 @@ Among the metrics that only measure diversity, we highlight those that calculate
 %
 % The offline group is composed of: Chi-square-like deviation~\cite{deb1989genetic}; Spacing method~\cite{scott1995fault}; Uniformly distribution index~\cite{tan2002evolutionary}; Entropy approach~\cite{farhang2002diversity}; Grid diversity metric~\cite{deb2002running}; sparsity measure~\cite{deb2003fast}. These published studies need knowledge of the PF or the ideal vector. While the online group is composed of: sigma method~\cite{mostaghim2003strategies}  (PF lies in the positive objective space); entropy of the solutions by using Parzen window density estimation-\cite{tan2008evolutionary} (sensitive to kernel width); maximum relative diversity loss~\cite{gee2015online} (expensive $O(N^2)$, with $N$ being the size of the parent population).
 
-In this work we chose to apply the MRDL as the strategy to measure diversity on the objective space. This is an online diversity metric estimates the diversity loss of a solution to the whole population~\cite{gee2015online}. High values indicate the existence of similar solutions or that the offspring solution is close to the convergence direction. The further an objective vector of a solution is from the convergence direction, the more it contributes for the diversity of the approximated the Pareto front. The MRDL is the maximum value for Relative Diversity Loss (RDL) of each solution.
+In this work we chose to apply the MRDL as the strategy to measure diversity on the objective space. This is an online diversity metric estimates the diversity loss of a solution to the whole population~\cite{gee2015online}. High values indicate the existence of similar solutions or that the offspring solution is close to the convergence direction. The further an objective vector of a solution is from the convergence direction, the more it contributes for the diversity of the approximated the Pareto Front. The MRDL is the maximum value for Relative Diversity Loss (RDL) of each solution.
 
 To deal with diversity on the decision space we consider the similarity of decision vectors of consecutive iteractions given by the (2-)Norm. The Norm is defined similarly as the R.I., since in both a difference between vectors values from distinct iteractions. However there are two main differences between R.I. and Norm priority function. The first is that while the R.I. considers the function values of solutions the Norm considers its decision values. The second difference is that R.I. also considers equation~\ref{priority2}.

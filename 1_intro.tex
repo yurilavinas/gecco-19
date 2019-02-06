@@ -4,9 +4,9 @@
 Multi-objective Optimization Problems (MOP) are maximization (or minimization)
 problems characterized by multiple, conflicting objective functions. It arises
 in real world applications that require a compromise among multiple objectives.
-Thet of optimal trade off solutions in the decision space is the \emph{Pareto
-Set}, and the image of this set in the objective space is the \emph{Pareto
-Front}. Finding a good approximation of the Pareto Front is a hard problem for
+The set of optimal trade off solutions in the decision space is the \emph{Pareto
+Set (PS)}, and the image of this set in the objective space is the \emph{Pareto
+Front (PF)}. Finding a good approximation of the Pareto Front is a hard problem for
 which multiple Evolutionary Algorithms have been proposed.
 
 % Mention that MOEAD is a good approach for MOP
@@ -44,7 +44,8 @@ In this paper, we define a priority function based on diversity on the objective
 
 % Expand the paragraph below with more details on the results and conclusions
 % Use the abstract as inspiration. 
-We compare the new approach with the Relative Improvement and with the standard MOEA/D (with no priority function). The results show that focusing on diversity leads to better results on the metrics Hypervolume (HV) and Inverted Generational Distance (IGD) and also lead to a higher percentage of non-dominated solutions. The diversity on the decision space shows better performance on the benchmark function,  generally being better than using the relative improvement. It came to our surprise that the diversity on the objective space barely improve the results of not using priority functionsm in the artificial benchmarks. On the other hand, using diversity on the objective space as a priority function excels in the Lunar Landing problem.
+We compare the new approach with the Relative Improvement and with the standard MOEA/D (with no priority function). The results show that a priority function focused on decision space lead to better results on the metrics Hypervolume (HV) and Inverted Generational Distance (IGD) and also lead to a higher percentage of non-dominated solutions. The diversity on the decision space shows better performance on the benchmark function,  generally being better than using the Relative Improvement. To our surprise, priority function on objective space did not perform so well, barely improving the results compared with no Resource Allocation at all. On the Lunar Landing problem, all methods achieved similar HV values but, the proposed priority function obtained higher proportion of feasible solutions.
+
 
 %The results found supported that idea, since in the real-world Lunar Landing problem these priority functions performed very well (with emphasis on the results of the 2-Norm). In the UF benchmark problem only 2-Norm performed well, followed closely by the relative improvement. All code is available for reproducibility purpose.
 
